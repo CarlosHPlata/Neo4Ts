@@ -27,6 +27,6 @@ export class DBExecuter implements IDBExecuter {
     }
 
     private getSession(): Neo4JDriver.Session {
-        return this.driverAdapter.driver.session();
+        return this.driverAdapter.getDriver().session();
     }
 }

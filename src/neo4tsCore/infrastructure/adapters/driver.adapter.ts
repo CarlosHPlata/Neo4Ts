@@ -5,12 +5,12 @@ import {ConfigurationManager} from '../../modules/configManager/core/entities/co
 export class DriverAdapter {
     private static instance: DriverAdapter;
 
-    driver: Neo4JDriver.Driver;
+    private driver: Neo4JDriver.Driver | null;
     private configManager: ConfigurationManager;
 
     private constructor() {
         this.configManager = getConfiguration();
-        this.driver = this.getNewDriver();
+        this.driver = this.openNewDriver();
     }
 
     static getInstance(): DriverAdapter {
@@ -21,13 +21,32 @@ export class DriverAdapter {
         return DriverAdapter.instance;
     }
 
-    getNewDriver(): Neo4JDriver.Driver {
+    isDriverOpen(): boolean {
+        return this.driver != null;
+    }
+
+    openNewDriver(): Neo4JDriver.Driver {
         const url = this.configManager.databaseUrl;
         const user = this.configManager.databaseUser;
         const pass = this.configManager.databasePassword;
-        console.log('estoy usando esto para conectarme papa',url, user, pass);
         this.driver = Neo4JDriver.driver(url, Neo4JDriver.auth.basic(user, pass));
 
         return this.driver;
+    }
+
+    getDriver(): Neo4JDriver.Driver {
+        if (this.driver) {
+            return this.driver;
+        }
+        
+        const driver = this.openNewDriver();
+        return driver;
+    }
+
+    closeDriver(): void {
+        if (this.driver) {
+            this.driver.close();
+            this.driver = null;
+        }
     }
 }

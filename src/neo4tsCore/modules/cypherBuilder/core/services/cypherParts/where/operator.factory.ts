@@ -1,4 +1,4 @@
-import {Operator, Property} from "../../../../../../core/entities/neoEntities/property.entity";
+import {Operator, Property} from '../../../../../../core/entities/neoEntities/property.entity';
 
 export const operatorFactory = (property: Property): string => {
         switch( property.operator ) {

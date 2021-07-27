@@ -1,10 +1,10 @@
-import {GraphRelationship} from "../../dtos/graphrelationship.dto";
-import {IGraphEntity} from "../../entities/neoEntities/graph.entity";
-import {Node} from "../../entities/neoEntities/node.entity";
-import {Relationship} from "../../entities/neoEntities/relationship.entity";
-import {PropertyMapper} from "../propertiesMapper";
-import {AliasedRelationship} from "./entity.mapper";
-import * as EntityUtils from "./entity.utils";
+import {GraphRelationship} from '../../dtos/graphrelationship.dto';
+import {IGraphEntity} from '../../entities/neoEntities/graph.entity';
+import {Node} from '../../entities/neoEntities/node.entity';
+import {Relationship} from '../../entities/neoEntities/relationship.entity';
+import {PropertyMapper} from '../propertiesMapper';
+import {AliasedRelationship} from './entity.mapper';
+import * as EntityUtils from './entity.utils';
 
 export class RelationshipMapper {
     private entitiescreated: IGraphEntity[] = [];

@@ -1,5 +1,5 @@
-import {Node} from "../../../../../../core/entities/neoEntities/node.entity";
-import {Relationship} from "../../../../../../core/entities/neoEntities/relationship.entity";
+import {Node} from '../../../../../../core/entities/neoEntities/node.entity';
+import {Relationship} from '../../../../../../core/entities/neoEntities/relationship.entity';
 
 export const buildNodeSelect = (node: Node, usedNodes: Node[]): string => {
     const found = usedNodes.find(n => n == node);

@@ -1,11 +1,11 @@
-import {IGraphEntity} from "../../../../../../core/entities/neoEntities/graph.entity";
-import {Node} from "../../../../../../core/entities/neoEntities/node.entity";
-import {ParamsHolder} from "../../../../../../core/entities/paramsHolder";
-import {MIN_CHARACTERS} from "../cypher.charactes";
-import {WhereServiceBuilder} from "../where";
-import {EntitiesMatchBuiler} from "./entitiesMatch.builder";
-import {OptionalEntitiesMatchBuilder} from "./optionalEntitiesMatch.builder";
-import {SelectBuilder} from "./select.service";
+import {IGraphEntity} from '../../../../../../core/entities/neoEntities/graph.entity';
+import {Node} from '../../../../../../core/entities/neoEntities/node.entity';
+import {ParamsHolder} from '../../../../../../core/entities/paramsHolder';
+import {MIN_CHARACTERS} from '../cypher.charactes';
+import {WhereServiceBuilder} from '../where';
+import {EntitiesMatchBuiler} from './entitiesMatch.builder';
+import {OptionalEntitiesMatchBuilder} from './optionalEntitiesMatch.builder';
+import {SelectBuilder} from './select.service';
 
 class EntitiesMatchBuilerTest extends EntitiesMatchBuiler {
     getCypher(entities: IGraphEntity[], params: ParamsHolder,usedEntities: Node[]): string {

@@ -1,5 +1,5 @@
-import {IGraphEntity} from "./graph.entity";
-import {Property} from "./property.entity";
+import {IGraphEntity} from './graph.entity';
+import {Property} from './property.entity';
 
 export class Node implements IGraphEntity {
     isReturnable: boolean = true;

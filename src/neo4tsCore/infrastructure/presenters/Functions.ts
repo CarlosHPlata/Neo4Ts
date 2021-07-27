@@ -1,6 +1,6 @@
-import {GraphAbstraction} from "../../core/dtos/graph.abstraction.dto";
-import {DBAction} from "../../core/entities/db.action";
-import {ActionService} from "../../core/services/action.service";
+import {GraphAbstraction} from '../../core/dtos/graph.abstraction.dto';
+import {DBAction} from '../../core/entities/db.action';
+import {ActionService} from '../../core/services/action.service';
 
 export const makeFindAll =
 (actionService: ActionService) =>

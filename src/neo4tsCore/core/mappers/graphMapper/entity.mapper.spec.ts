@@ -1,8 +1,8 @@
-import {GraphAbstraction} from "../../dtos/graph.abstraction.dto";
-import {IGraphEntity} from "../../entities/neoEntities/graph.entity";
-import {Node} from "../../entities/neoEntities/node.entity";
-import {Relationship} from "../../entities/neoEntities/relationship.entity";
-import { EntityMapper } from "./entity.mapper";
+import {GraphAbstraction} from '../../dtos/graph.abstraction.dto';
+import {IGraphEntity} from '../../entities/neoEntities/graph.entity';
+import {Node} from '../../entities/neoEntities/node.entity';
+import {Relationship} from '../../entities/neoEntities/relationship.entity';
+import { EntityMapper } from './entity.mapper';
 
 class EntityMapperTest extends EntityMapper {
     setEntitiesCreated(entitiescreated: IGraphEntity[]) {

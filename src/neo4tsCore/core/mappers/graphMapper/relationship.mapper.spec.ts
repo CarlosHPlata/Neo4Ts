@@ -1,8 +1,8 @@
-import {GraphRelationship} from "../../dtos/graphrelationship.dto";
-import {IGraphEntity} from "../../entities/neoEntities/graph.entity";
-import {Node} from "../../entities/neoEntities/node.entity";
-import {Relationship} from "../../entities/neoEntities/relationship.entity";
-import {RelationshipMapper} from "./relationship.mapper";
+import {GraphRelationship} from '../../dtos/graphrelationship.dto';
+import {IGraphEntity} from '../../entities/neoEntities/graph.entity';
+import {Node} from '../../entities/neoEntities/node.entity';
+import {Relationship} from '../../entities/neoEntities/relationship.entity';
+import {RelationshipMapper} from './relationship.mapper';
 
 describe('testing relationship mapper', () => {
     let relationshipMapper: RelationshipMapper;

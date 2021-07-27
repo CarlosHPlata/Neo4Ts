@@ -1,11 +1,11 @@
-import {IGraphEntity} from "../../../../../../core/entities/neoEntities/graph.entity";
-import {Node} from "../../../../../../core/entities/neoEntities/node.entity";
-import {Property, PropertyTypes} from "../../../../../../core/entities/neoEntities/property.entity";
-import {Relationship} from "../../../../../../core/entities/neoEntities/relationship.entity";
-import {ParamsHolder} from "../../../../../../core/entities/paramsHolder";
-import {MIN_CHARACTERS} from "../cypher.charactes";
-import {WhereServiceBuilder} from "../where";
-import {OptionalEntitiesMatchBuilder} from "./optionalEntitiesMatch.builder";
+import {IGraphEntity} from '../../../../../../core/entities/neoEntities/graph.entity';
+import {Node} from '../../../../../../core/entities/neoEntities/node.entity';
+import {Property, PropertyTypes} from '../../../../../../core/entities/neoEntities/property.entity';
+import {Relationship} from '../../../../../../core/entities/neoEntities/relationship.entity';
+import {ParamsHolder} from '../../../../../../core/entities/paramsHolder';
+import {MIN_CHARACTERS} from '../cypher.charactes';
+import {WhereServiceBuilder} from '../where';
+import {OptionalEntitiesMatchBuilder} from './optionalEntitiesMatch.builder';
 
 class WhereBuilder extends WhereServiceBuilder {
     getCypher(entities: IGraphEntity[]): string {

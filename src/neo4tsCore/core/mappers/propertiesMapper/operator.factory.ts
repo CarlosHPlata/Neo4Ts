@@ -1,4 +1,4 @@
-import {Operator} from "../../entities/neoEntities/property.entity";
+import {Operator} from '../../entities/neoEntities/property.entity';
 
 export const OperatorFactory = (value:string): Operator => {
     switch(value.toLowerCase()){

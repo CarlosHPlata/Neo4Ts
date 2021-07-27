@@ -42,7 +42,7 @@ function getValue(recordValue:any) {
         isArray = Array.isArray(recordValue);
         isObject = typeof recordValue === 'object';
         isInteger = neo4j.isInt(recordValue);
-        if (recordValue === "true" || recordValue === "false") {
+        if (recordValue === 'true' || recordValue === 'false') {
             isBool = true;
         }
     }
@@ -75,9 +75,9 @@ function getValue(recordValue:any) {
                 tempObj[nodeKey] = getValue(recordValue[nodeKey]);
             });
         } else if (isBool) {
-            if (recordValue === "true") {
+            if (recordValue === 'true') {
                 tempObj = true;
-            } else if (recordValue === "false") {
+            } else if (recordValue === 'false') {
                 tempObj = false;
             }
         }

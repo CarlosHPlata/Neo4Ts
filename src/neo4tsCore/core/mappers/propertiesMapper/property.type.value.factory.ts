@@ -1,6 +1,6 @@
-import {GraphPropertyDefinition} from "../../dtos/graphproperty.dto";
-import {Property, PropertyTypes} from "../../entities/neoEntities/property.entity";
-import {validateOneTypeArray} from "./property.utils";
+import {GraphPropertyDefinition} from '../../dtos/graphproperty.dto';
+import {Property, PropertyTypes} from '../../entities/neoEntities/property.entity';
+import {validateOneTypeArray} from './property.utils';
 
 export const PropertyTypeValueFactory = (alias: string, dbprop: GraphPropertyDefinition):Property => {
     let prop:Property;

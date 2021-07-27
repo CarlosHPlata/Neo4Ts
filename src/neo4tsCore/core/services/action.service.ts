@@ -1,9 +1,9 @@
-import {CypherActions} from "../../modules/cypherBuilder/infrastructure/presenters/cypher.actions";
-import {GraphAbstraction} from "../dtos/graph.abstraction.dto";
-import {DBAction} from "../entities/db.action";
-import {IGraphEntity} from "../entities/neoEntities/graph.entity";
-import {IQueryPort} from "../interfaces/query.port";
-import {EntityMapper} from "../mappers/graphMapper";
+import {CypherActions} from '../../modules/cypherBuilder/infrastructure/presenters/cypher.actions';
+import {GraphAbstraction} from '../dtos/graph.abstraction.dto';
+import {DBAction} from '../entities/db.action';
+import {IGraphEntity} from '../entities/neoEntities/graph.entity';
+import {IQueryPort} from '../interfaces/query.port';
+import {EntityMapper} from '../mappers/graphMapper';
 
 export class ActionService {
     protected entityMapper: EntityMapper;

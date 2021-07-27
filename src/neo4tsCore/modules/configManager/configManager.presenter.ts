@@ -1,4 +1,4 @@
-import {ConfigurationManager} from "./core/entities/configManager";
+import {ConfigurationManager} from './core/entities/configManager';
 
 export type Configuration = {databaseUrl: string, databaseUser: string, databasePassword: string};
 

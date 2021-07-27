@@ -1,6 +1,14 @@
-import {IGraphEntity} from "../../../../core/entities/neoEntities/graph.entity";
-import {Node} from "../../../../core/entities/neoEntities/node.entity";
-import {RetrieveBuilder} from "./retrieve.builder";
+import {IGraphEntity} from '../../../../core/entities/neoEntities/graph.entity';
+import {Node} from '../../../../core/entities/neoEntities/node.entity';
+import {RetrieveBuilder} from './retrieve.builder';
+
+class RetrieveBuilderTest extends RetrieveBuilder {
+    constructor(entities: IGraphEntity[]) {
+        super(entities, {
+            run: async () => ''
+        });
+    }
+}
 
 describe('test retrieve builder', () => {
     let retrieveBuilder: RetrieveBuilder;
@@ -8,7 +16,7 @@ describe('test retrieve builder', () => {
 
     beforeEach(() => {
         entities = [new Node('test', ['test'])];
-        retrieveBuilder = new RetrieveBuilder(entities);
+        retrieveBuilder = new RetrieveBuilderTest(entities);
     });
 
     test('when sending a node it returns a query', () => {

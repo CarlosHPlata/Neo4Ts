@@ -1,5 +1,5 @@
-import { Property, PropertyTypes } from "../../core/entities";
-import { ParamValueFactory } from "../../core/interfaces/abstract.param.value.factory";
+import { Property, PropertyTypes } from '../../core/entities';
+import { ParamValueFactory } from '../../core/interfaces/abstract.param.value.factory';
 import * as Neo4jDriver from 'neo4j-driver';
 
 export const Neo4jValueFactory: ParamValueFactory = (property: Property) => {

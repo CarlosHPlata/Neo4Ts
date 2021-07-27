@@ -1,8 +1,8 @@
-import {IGraphEntity} from "../../../../../../core/entities/neoEntities/graph.entity";
-import {Node} from "../../../../../../core/entities/neoEntities/node.entity";
-import {Relationship} from "../../../../../../core/entities/neoEntities/relationship.entity";
-import {WhereServiceBuilder} from "../where";
-import {EntitiesMatchBuiler} from "./entitiesMatch.builder";
+import {IGraphEntity} from '../../../../../../core/entities/neoEntities/graph.entity';
+import {Node} from '../../../../../../core/entities/neoEntities/node.entity';
+import {Relationship} from '../../../../../../core/entities/neoEntities/relationship.entity';
+import {WhereServiceBuilder} from '../where';
+import {EntitiesMatchBuiler} from './entitiesMatch.builder';
 
 export class OptionalEntitiesMatchBuilder extends EntitiesMatchBuiler {
     protected PREFIX_EMPTY = 'OPTIONAL MATCH ';

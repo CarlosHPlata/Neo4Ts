@@ -1,7 +1,7 @@
-import {GraphProperty} from "../../dtos/graphproperty.dto";
-import {Property, PropertyTypes} from "../../entities/neoEntities/property.entity";
-import {PropertyObjectMapper} from "./property.object.mapper";
-import {validateOneTypeArray} from "./property.utils";
+import {GraphProperty} from '../../dtos/graphproperty.dto';
+import {Property, PropertyTypes} from '../../entities/neoEntities/property.entity';
+import {PropertyObjectMapper} from './property.object.mapper';
+import {validateOneTypeArray} from './property.utils';
 
 export class PropertyMapper {
 

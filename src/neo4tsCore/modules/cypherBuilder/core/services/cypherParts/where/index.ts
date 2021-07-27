@@ -1,1 +1,1 @@
-export * from "./where.service";
+export * from './where.service';

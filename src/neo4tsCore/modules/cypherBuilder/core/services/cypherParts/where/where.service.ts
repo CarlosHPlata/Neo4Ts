@@ -1,9 +1,9 @@
-import {IGraphEntity} from "../../../../../../core/entities/neoEntities/graph.entity";
-import {Operator, Property} from "../../../../../../core/entities/neoEntities/property.entity";
-import {ParamsHolder} from "../../../../../../core/entities/paramsHolder";
-import {CypherBuilder} from "../cypher.builder";
-import * as FilterFactory from "./filterCondition.factory";
-import * as OperatorFactory from "./operator.factory";
+import {IGraphEntity} from '../../../../../../core/entities/neoEntities/graph.entity';
+import {Operator, Property} from '../../../../../../core/entities/neoEntities/property.entity';
+import {ParamsHolder} from '../../../../../../core/entities/paramsHolder';
+import {CypherBuilder} from '../cypher.builder';
+import * as FilterFactory from './filterCondition.factory';
+import * as OperatorFactory from './operator.factory';
 
 export class WhereServiceBuilder extends CypherBuilder {
     private doesFirstPass: boolean = false;
@@ -67,7 +67,7 @@ export class WhereServiceBuilder extends CypherBuilder {
 
         if (!this.doesFirstPass) {
             if (property.operator != Operator.AND) {
-                throw new Error('In where filter, the first filte should be always an "AND" operator');
+                throw new Error('In where filter, the first filte should be always an \'AND\' operator');
             }
 
             operator += this.TAB_CHAR;

@@ -1,14 +1,14 @@
-import {GraphAbstraction} from "../../dtos/graph.abstraction.dto";
-import {GraphEntity} from "../../dtos/graphentity.dto";
-import {GraphRelationship} from "../../dtos/graphrelationship.dto";
-import {IGraphEntity} from "../../entities/neoEntities/graph.entity";
-import { Node } from "../../entities/neoEntities/node.entity";
-//import { Property } from "../../entities/neoEntities/property.entity";
-import { Relationship } from "../../entities/neoEntities/relationship.entity";
-import * as EntityUtils from "./entity.utils";
-import {validateGraphEntity} from "./entity.validator";
-import {NodeMapper} from "./node.mapper";
-import {RelationshipMapper} from "./relationship.mapper";
+import {GraphAbstraction} from '../../dtos/graph.abstraction.dto';
+import {GraphEntity} from '../../dtos/graphentity.dto';
+import {GraphRelationship} from '../../dtos/graphrelationship.dto';
+import {IGraphEntity} from '../../entities/neoEntities/graph.entity';
+import { Node } from '../../entities/neoEntities/node.entity';
+//import { Property } from '../../entities/neoEntities/property.entity';
+import { Relationship } from '../../entities/neoEntities/relationship.entity';
+import * as EntityUtils from './entity.utils';
+import {validateGraphEntity} from './entity.validator';
+import {NodeMapper} from './node.mapper';
+import {RelationshipMapper} from './relationship.mapper';
 
 export type AliasedGraph = [string, GraphRelationship | GraphEntity];
 export type AliasedNode = [string, GraphEntity];

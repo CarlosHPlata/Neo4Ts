@@ -1,5 +1,5 @@
-import {IGraphEntity} from "../../../../../core/entities/neoEntities/graph.entity";
-import {ParamsHolder} from "../../../../../core/entities/paramsHolder";
+import {IGraphEntity} from '../../../../../core/entities/neoEntities/graph.entity';
+import {ParamsHolder} from '../../../../../core/entities/paramsHolder';
 
 export abstract class CypherBuilder {
     protected entities: IGraphEntity[] = [];

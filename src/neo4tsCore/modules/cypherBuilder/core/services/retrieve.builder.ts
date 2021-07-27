@@ -1,19 +1,21 @@
-import {DBAction} from "../../../../core/entities/db.action";
-import {IGraphEntity} from "../../../../core/entities/neoEntities/graph.entity";
-import {ParamsHolder} from "../../../../core/entities/paramsHolder";
-import {CypherBuilder} from "./cypherParts/cypher.builder";
-import {generateSkipAndLimit} from "./cypherParts/decorators/skipLimit.builder";
-import {simpleReturnBuilder} from "./cypherParts/return/return.builder.service";
-import {SelectBuilder} from "./cypherParts/select/select.service";
+import {DBAction} from '../../../../core/entities/db.action';
+import {IGraphEntity} from '../../../../core/entities/neoEntities/graph.entity';
+import {ParamsHolder} from '../../../../core/entities/paramsHolder';
+import { IDBExecuter } from '../../../../core/interfaces/dbexecuter.adapter';
+import {CypherBuilder} from './cypherParts/cypher.builder';
+import {generateSkipAndLimit} from './cypherParts/decorators/skipLimit.builder';
+import {simpleReturnBuilder} from './cypherParts/return/return.builder.service';
+import {SelectBuilder} from './cypherParts/select/select.service';
 
 export class RetrieveBuilder extends DBAction {
     page: number|undefined;
     size: number|undefined;
 
     constructor(
-        entities: IGraphEntity[]
+        entities: IGraphEntity[],
+        adapter?: IDBExecuter
     ) {
-        super(entities);
+        super(entities, adapter);
         this.returnBuilderCallBack = simpleReturnBuilder;
     }
 

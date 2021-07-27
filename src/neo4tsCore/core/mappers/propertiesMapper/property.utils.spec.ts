@@ -1,4 +1,4 @@
-import {validateOneTypeArray} from "./property.utils";
+import {validateOneTypeArray} from './property.utils';
 
 describe('testing validate onte type array', () => {
 

@@ -1,2 +1,2 @@
 
-export * from "../../core/entities";
+export * from '../../core/entities';

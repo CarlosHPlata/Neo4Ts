@@ -1,5 +1,5 @@
-import {GraphEntity} from "../../dtos/graphentity.dto";
-import {GraphRelationship} from "../../dtos/graphrelationship.dto";
+import {GraphEntity} from '../../dtos/graphentity.dto';
+import {GraphRelationship} from '../../dtos/graphrelationship.dto';
 
 
 export const validateGraphEntity = (entity: GraphEntity | GraphRelationship): boolean => {

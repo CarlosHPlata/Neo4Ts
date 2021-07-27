@@ -1,5 +1,5 @@
-import {GraphEntity} from "../../dtos/graphentity.dto";
-import {generateFakeAlias, getId, getLabels, pushGroupToAllProperties} from "./entity.utils";
+import {GraphEntity} from '../../dtos/graphentity.dto';
+import {generateFakeAlias, getId, getLabels, pushGroupToAllProperties} from './entity.utils';
 
 
 describe('testing entity utils', () => {

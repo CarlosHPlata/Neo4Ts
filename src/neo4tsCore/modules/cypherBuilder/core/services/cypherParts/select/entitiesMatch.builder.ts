@@ -1,7 +1,7 @@
-import {Node} from "../../../../../../core/entities/neoEntities/node.entity";
-import {Relationship} from "../../../../../../core/entities/neoEntities/relationship.entity";
-import {CypherBuilder} from "../cypher.builder";
-import * as SelectUtils from "./select.utils";
+import {Node} from '../../../../../../core/entities/neoEntities/node.entity';
+import {Relationship} from '../../../../../../core/entities/neoEntities/relationship.entity';
+import {CypherBuilder} from '../cypher.builder';
+import * as SelectUtils from './select.utils';
 
 export class EntitiesMatchBuiler extends CypherBuilder {
     protected usedNodes: Node[] = [];

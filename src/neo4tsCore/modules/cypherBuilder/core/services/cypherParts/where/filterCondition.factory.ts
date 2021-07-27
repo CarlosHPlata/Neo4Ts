@@ -1,4 +1,4 @@
-import {Condition, Property, PropertyTypes} from "../../../../../../core/entities/neoEntities/property.entity";
+import {Condition, Property, PropertyTypes} from '../../../../../../core/entities/neoEntities/property.entity';
 
 export const filterConditionFactory = (
     property: Property,

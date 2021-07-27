@@ -1,8 +1,8 @@
-import {GraphPropertyDefinition} from "../../dtos/graphproperty.dto";
-import {Condition, Operator, Property, PropertyTypes} from "../../entities/neoEntities/property.entity";
-import {OperatorFactory} from "./operator.factory";
-import {PropertyConditionFactory} from "./property.condition.factory";
-import {PropertyTypeValueFactory} from "./property.type.value.factory";
+import {GraphPropertyDefinition} from '../../dtos/graphproperty.dto';
+import {Condition, Operator, Property, PropertyTypes} from '../../entities/neoEntities/property.entity';
+import {OperatorFactory} from './operator.factory';
+import {PropertyConditionFactory} from './property.condition.factory';
+import {PropertyTypeValueFactory} from './property.type.value.factory';
 
 export class PropertyObjectMapper {
 

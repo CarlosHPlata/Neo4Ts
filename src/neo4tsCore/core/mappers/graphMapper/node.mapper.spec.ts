@@ -1,6 +1,6 @@
-import {GraphEntity} from "../../dtos/graphentity.dto";
-import {Node} from "../../entities/neoEntities/node.entity";
-import {NodeMapper} from "./node.mapper";
+import {GraphEntity} from '../../dtos/graphentity.dto';
+import {Node} from '../../entities/neoEntities/node.entity';
+import {NodeMapper} from './node.mapper';
 
 describe('testing the node mapper', () => {
     

@@ -1,1 +1,1 @@
-export {findAll} from "./Functions";
+export {findAll} from './Functions';

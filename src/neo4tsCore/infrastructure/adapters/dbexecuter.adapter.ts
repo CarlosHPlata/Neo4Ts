@@ -1,6 +1,6 @@
-import {IDBExecuter} from "../../core/interfaces/dbexecuter.adapter";
+import {IDBExecuter} from '../../core/interfaces/dbexecuter.adapter';
 import * as Neo4JDriver from 'neo4j-driver';
-import {DriverAdapter} from "./driver.adapter";
+import {DriverAdapter} from './driver.adapter';
 
 export class DBExecuter implements IDBExecuter {
     private driverAdapter: DriverAdapter;

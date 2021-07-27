@@ -1,6 +1,6 @@
-import {Property, PropertyTypes} from "../../entities/neoEntities/property.entity";
-import {PropertyMapper} from "./property.mapper";
-import {PropertyObjectMapper} from "./property.object.mapper";
+import {Property, PropertyTypes} from '../../entities/neoEntities/property.entity';
+import {PropertyMapper} from './property.mapper';
+import {PropertyObjectMapper} from './property.object.mapper';
 
 class PropertyMapperTest extends PropertyMapper {
     getObjectMapper(): PropertyObjectMapper {

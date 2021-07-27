@@ -1,4 +1,4 @@
-import {GraphProperty} from "./graphproperty.dto";
+import {GraphProperty} from './graphproperty.dto';
 
 export type GraphEntity = {
     id?: string | number;

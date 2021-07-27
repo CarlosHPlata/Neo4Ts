@@ -1,6 +1,6 @@
-import {GraphEntity} from "../../dtos/graphentity.dto";
-import {GraphRelationship} from "../../dtos/graphrelationship.dto";
-import {validateGraphEntity} from "./entity.validator";
+import {GraphEntity} from '../../dtos/graphentity.dto';
+import {GraphRelationship} from '../../dtos/graphrelationship.dto';
+import {validateGraphEntity} from './entity.validator';
 
 describe('testing the entity validator', () => {
 

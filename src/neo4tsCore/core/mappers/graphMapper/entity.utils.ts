@@ -1,4 +1,4 @@
-import {GraphEntity} from "../../dtos/graphentity.dto";
+import {GraphEntity} from '../../dtos/graphentity.dto';
 
 
 export const getId = (graphEntity: GraphEntity):string|number|undefined => {

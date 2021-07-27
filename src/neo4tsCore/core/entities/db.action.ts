@@ -1,9 +1,9 @@
-import {DBExecuter} from "../../infrastructure/adapters/dbexecuter.adapter";
-import {MIN_CHARACTERS, PRETTY_CHARACTERS, RETUNR_KEYWORD} from "../../modules/cypherBuilder/core/services/cypherParts/cypher.charactes";
-import {IDBExecuter} from "../interfaces/dbexecuter.adapter";
-import {IGraphEntity} from "./neoEntities/graph.entity";
-import {ParamsHolder} from "./paramsHolder";
-import * as GenericTranslator from "../../modules/resultParser/GenericTranslator";
+import {DBExecuter} from '../../infrastructure/adapters/dbexecuter.adapter';
+import {MIN_CHARACTERS, PRETTY_CHARACTERS, RETUNR_KEYWORD} from '../../modules/cypherBuilder/core/services/cypherParts/cypher.charactes';
+import {IDBExecuter} from '../interfaces/dbexecuter.adapter';
+import {IGraphEntity} from './neoEntities/graph.entity';
+import {ParamsHolder} from './paramsHolder';
+import * as GenericTranslator from '../../modules/resultParser/GenericTranslator';
 
 export abstract class DBAction {
     protected LINE_BREAK: string = MIN_CHARACTERS.LINE_BREAK;
@@ -18,11 +18,14 @@ export abstract class DBAction {
     protected executerAdapter: IDBExecuter;
 
     constructor(
-        entities: IGraphEntity[]
+        entities: IGraphEntity[],
+        adapter?: IDBExecuter
     ) {
         this.paramsHolder = new ParamsHolder();
         this.setEntities(entities);
-        this.executerAdapter = new DBExecuter();
+
+        if (adapter) this.executerAdapter = adapter;
+        else this.executerAdapter = new DBExecuter();
     }
 
 

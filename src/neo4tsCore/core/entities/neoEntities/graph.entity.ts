@@ -1,4 +1,4 @@
-import {Property} from "./property.entity";
+import {Property} from './property.entity';
 
 export interface IGraphEntity {
     id?: string | number;

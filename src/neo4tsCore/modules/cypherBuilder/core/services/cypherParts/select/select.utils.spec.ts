@@ -1,6 +1,6 @@
-import {Node} from "../../../../../../core/entities/neoEntities/node.entity";
-import {Relationship} from "../../../../../../core/entities/neoEntities/relationship.entity";
-import {buildNodeSelect, buildRelSelect} from "./select.utils";
+import {Node} from '../../../../../../core/entities/neoEntities/node.entity';
+import {Relationship} from '../../../../../../core/entities/neoEntities/relationship.entity';
+import {buildNodeSelect, buildRelSelect} from './select.utils';
 
 describe('testing select utils', () => {
 

@@ -1,5 +1,5 @@
-import { Property, PropertyTypes } from "../../core/entities";
-import { Neo4jValueFactory } from "./neo4j.driver.value.factory";
+import { Property, PropertyTypes } from '../../core/entities';
+import { Neo4jValueFactory } from './neo4j.driver.value.factory';
 import * as Neo4jDriver from 'neo4j-driver';
 
 describe('testing the factory', () => {

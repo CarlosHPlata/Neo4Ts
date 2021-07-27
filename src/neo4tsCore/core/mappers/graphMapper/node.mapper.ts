@@ -1,7 +1,7 @@
-import {Node} from "../../entities/neoEntities/node.entity";
-import {PropertyMapper} from "../propertiesMapper";
-import {AliasedNode} from "./entity.mapper";
-import * as EntityUtils from "./entity.utils";
+import {Node} from '../../entities/neoEntities/node.entity';
+import {PropertyMapper} from '../propertiesMapper';
+import {AliasedNode} from './entity.mapper';
+import * as EntityUtils from './entity.utils';
 
 export class NodeMapper {
     protected propertyMapper: PropertyMapper;

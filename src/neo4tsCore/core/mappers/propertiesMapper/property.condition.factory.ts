@@ -1,4 +1,4 @@
-import {Condition} from "../../entities/neoEntities/property.entity";
+import {Condition} from '../../entities/neoEntities/property.entity';
 
 
 export const PropertyConditionFactory = (value:string): Condition => {

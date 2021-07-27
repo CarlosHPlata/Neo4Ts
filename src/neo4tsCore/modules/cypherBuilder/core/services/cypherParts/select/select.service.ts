@@ -1,9 +1,9 @@
-import {IGraphEntity} from "../../../../../../core/entities/neoEntities/graph.entity";
-import {Node} from "../../../../../../core/entities/neoEntities/node.entity";
-import {CypherBuilder} from "../cypher.builder";
-import {WhereServiceBuilder} from "../where";
-import {EntitiesMatchBuiler} from "./entitiesMatch.builder";
-import {OptionalEntitiesMatchBuilder} from "./optionalEntitiesMatch.builder";
+import {IGraphEntity} from '../../../../../../core/entities/neoEntities/graph.entity';
+import {Node} from '../../../../../../core/entities/neoEntities/node.entity';
+import {CypherBuilder} from '../cypher.builder';
+import {WhereServiceBuilder} from '../where';
+import {EntitiesMatchBuiler} from './entitiesMatch.builder';
+import {OptionalEntitiesMatchBuilder} from './optionalEntitiesMatch.builder';
 
 export class SelectBuilder extends CypherBuilder {
     protected matchBuilder: EntitiesMatchBuiler;

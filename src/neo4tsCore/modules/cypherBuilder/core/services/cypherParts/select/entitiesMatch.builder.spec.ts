@@ -1,9 +1,9 @@
-import {IGraphEntity} from "../../../../../../core/entities/neoEntities/graph.entity";
-import {Node} from "../../../../../../core/entities/neoEntities/node.entity";
-import {Relationship} from "../../../../../../core/entities/neoEntities/relationship.entity";
-import {ParamsHolder} from "../../../../../../core/entities/paramsHolder";
-import {MIN_CHARACTERS} from "../cypher.charactes";
-import {EntitiesMatchBuiler} from "./entitiesMatch.builder";
+import {IGraphEntity} from '../../../../../../core/entities/neoEntities/graph.entity';
+import {Node} from '../../../../../../core/entities/neoEntities/node.entity';
+import {Relationship} from '../../../../../../core/entities/neoEntities/relationship.entity';
+import {ParamsHolder} from '../../../../../../core/entities/paramsHolder';
+import {MIN_CHARACTERS} from '../cypher.charactes';
+import {EntitiesMatchBuiler} from './entitiesMatch.builder';
 
 describe('testing entities match builder', () => {
 

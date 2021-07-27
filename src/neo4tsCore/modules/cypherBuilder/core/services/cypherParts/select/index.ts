@@ -1,1 +1,1 @@
-export {buildSelect} from "./select.service";
+export {buildSelect} from './select.service';

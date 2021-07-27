@@ -1,7 +1,7 @@
-import { Neo4jValueFactory } from "../../infrastructure/factories/neo4j.driver.value.factory";
-import { ParamValueFactory } from "../interfaces/abstract.param.value.factory";
-import {IGraphEntity} from "./neoEntities/graph.entity";
-import {Property} from "./neoEntities/property.entity";
+import { Neo4jValueFactory } from '../../infrastructure/factories/neo4j.driver.value.factory';
+import { ParamValueFactory } from '../interfaces/abstract.param.value.factory';
+import {IGraphEntity} from './neoEntities/graph.entity';
+import {Property} from './neoEntities/property.entity';
 
 type propertyHolder= Record<string, {name: string, value: any}>;
 type entitiesParams = Record<string, propertyHolder>

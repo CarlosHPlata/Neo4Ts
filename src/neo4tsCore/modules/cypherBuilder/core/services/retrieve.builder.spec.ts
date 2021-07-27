@@ -2,31 +2,24 @@ import {IGraphEntity} from "../../../../core/entities/neoEntities/graph.entity";
 import {Node} from "../../../../core/entities/neoEntities/node.entity";
 import {RetrieveBuilder} from "./retrieve.builder";
 
-class RetrieveBuilderTest extends RetrieveBuilder {
-    setBuildSelect(fn: (entities: IGraphEntity[]) => string): void {
-        this.buildSelect = fn;
-    }
-
-    setEntities(entities: IGraphEntity[]) {
-        this.entities = entities;
-    }
-}
-
-const buildSelect = (entities: IGraphEntity[]) => {return JSON.stringify(entities)};
-
 describe('test retrieve builder', () => {
-    let retrieveBuilder: RetrieveBuilderTest;
+    let retrieveBuilder: RetrieveBuilder;
     let entities: IGraphEntity[];
 
     beforeEach(() => {
         entities = [new Node('test', ['test'])];
-        retrieveBuilder = new RetrieveBuilderTest(entities);
-        retrieveBuilder.setBuildSelect(buildSelect);
+        retrieveBuilder = new RetrieveBuilder(entities);
     });
 
-    test('test that is getting a valid query', () => {
+    test('when sending a node it returns a query', () => {
         const query: string = retrieveBuilder.getQuery();
+        expect(query).toBe('MATCH (test:test) RETURN test');
+    });
 
-        expect(query).toBe(JSON.stringify(entities));
+    test('when sending page and limit it gets generated', () => {
+        retrieveBuilder.page = 1;
+        retrieveBuilder.size = 10;
+
+        expect(retrieveBuilder.getQuery()).toBe('MATCH (test:test) RETURN test SKIP 10 LIMIT 10');
     });
 });

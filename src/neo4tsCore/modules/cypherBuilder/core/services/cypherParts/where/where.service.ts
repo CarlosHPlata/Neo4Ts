@@ -1,16 +1,28 @@
 import {IGraphEntity} from "../../../../../../core/entities/neoEntities/graph.entity";
-import {Condition, Operator, Property, PropertyTypes} from "../../../../../../core/entities/neoEntities/property.entity";
+import {Operator, Property} from "../../../../../../core/entities/neoEntities/property.entity";
 import {ParamsHolder} from "../../../../../../core/entities/paramsHolder";
+import {CypherBuilder} from "../cypher.builder";
+import * as FilterFactory from "./filterCondition.factory";
+import * as OperatorFactory from "./operator.factory";
 
-export class WhereServiceBuilder {
+export class WhereServiceBuilder extends CypherBuilder {
     private doesFirstPass: boolean = false;
 
-    constructor(
-        private entities: IGraphEntity[],
-        private params: ParamsHolder
-    ) {}
+    protected filterAndConditionFactory: (property: Property, propertyName: string, paramValue:string)=>string;
+    protected operatorFactory: (property: Property) => string;
+    
+    protected entities: IGraphEntity[];
+    protected params: ParamsHolder;
 
-    getWhere(): string {
+    constructor(lineBreak: string, tabChar: string) {
+        super(lineBreak, tabChar);
+        this.filterAndConditionFactory = FilterFactory.filterConditionFactory;
+        this.operatorFactory = OperatorFactory.operatorFactory;
+        this.entities = [];
+        this.params = new ParamsHolder();
+    }
+
+    protected buildCypher(): string {
         let query: string = this.generateFiltersQueryString();
 
         if (query.length > 0)
@@ -58,28 +70,13 @@ export class WhereServiceBuilder {
                 throw new Error('In where filter, the first filte should be always an "AND" operator');
             }
 
-            operator += '\n\t';
+            operator += this.TAB_CHAR;
             this.doesFirstPass = true;
         } else {
-            operator += this.generateFilterOperatorString(property);
+            operator += this.LINE_BREAK + this.TAB_CHAR + this.operatorFactory(property) + ' ';
         }
 
         return operator;
-    }
-
-    private generateFilterOperatorString(property: Property): string {
-        switch( property.operator ) {
-            case Operator.AND:
-                return '\n\tAND';
-            case Operator.OR:
-                return '\n\tOR';
-            case Operator.NOT:
-                return '\n\tNOT';
-            case Operator.XOR:
-                return '\n\tXOR';
-            default:
-                return '\n\tAND';
-        }
     }
 
     private generateFilterWithCondition(property: Property, parentEntity: IGraphEntity): string {
@@ -87,94 +84,15 @@ export class WhereServiceBuilder {
         let propertyName = this.generatePropertyName(property, parentEntity);
         let paramValue = this.params.getParamNameForQuery(parentEntity.alias, property.alias);
 
-        return this.generateFilterStringWithCondition(property, propertyName, paramValue);
+        return this.filterAndConditionFactory(property, propertyName, paramValue);
     }
 
     private generatePropertyName(property: Property, parentEntity: IGraphEntity): string {
         return `${parentEntity.alias}.${property.alias}`; 
     }
 
-
-    private generateFilterStringWithCondition(
-        property: Property,
-        propertyName: string,
-        paramValue: string
-    ): string {
-        switch( property.condition ) {
-            case Condition.DIFFERENT:
-                return `${propertyName} <> ${paramValue}`;
-            
-            case Condition.CONTAINS:
-                if( property.type !== PropertyTypes.STRING){
-                    throw new Error('Contains is an operator only available on strings');
-                }
-                return `toLower(${propertyName}) CONTAINS ${paramValue}`;
-
-            case Condition.NOTCONTAINS:
-                if( property.type !== PropertyTypes.STRING){
-                    throw new Error('Contains is an operator only available on strings');
-                }
-                return `(not ( toLower(${propertyName}) CONTAINS toLower(${paramValue}) ))`;
-
-            case Condition.STARTS:
-                if( property.type !== PropertyTypes.STRING){
-                    throw new Error('Contains is an operator only available on strings');
-                }
-                return `toLower(${propertyName}) STARTS WITH toLower(${paramValue})`;
-
-            case Condition.ENDS:
-                if( property.type !== PropertyTypes.STRING){
-                    throw new Error('Contains is an operator only available on strings');
-                }
-                return `toLower(${propertyName}) ENDS WITH toLower(${paramValue})`;
-
-            case Condition.GREATER:
-                if ( property.type !== PropertyTypes.INTEGER && property.type !== PropertyTypes.FLOAT ) {
-                    throw new Error('Greater is an operator only available on numeric types');
-                }
-                return `${propertyName} > ${paramValue}`;
-
-            case Condition.GREATEREQUAL:
-                if (
-                    property.type !== PropertyTypes.INTEGER && property.type !==  PropertyTypes.FLOAT &&
-                    property.type !== PropertyTypes.DATE && property.type !== PropertyTypes.TIME &&
-                    property.type !== PropertyTypes.DATETIME
-                ) {
-                    throw new Error('Greater or Equal (>=) is an operator only available on numeric or date types');
-                }
-                return `${propertyName} >= ${paramValue}`;
-
-            case Condition.LOWER:
-                if ( property.type !== PropertyTypes.INTEGER && property.type !== PropertyTypes.FLOAT ) {
-                    throw new Error('LOWER is an operator only available on numeric types');
-                }
-                return `${propertyName} < ${paramValue}`;
-
-            case Condition.LOWEREQUAL:
-                if (
-                    property.type !== PropertyTypes.INTEGER && property.type !==  PropertyTypes.FLOAT &&
-                    property.type !== PropertyTypes.DATE && property.type !== PropertyTypes.TIME &&
-                    property.type !== PropertyTypes.DATETIME
-                ) {
-                    throw new Error('Lower or Equal (<=) is an operator only available on numeric or date types');
-                }
-                return `${propertyName} <= ${paramValue}`;
-
-            case Condition.IN:
-                return `${paramValue} IN ${propertyName}`;
-
-            case Condition.REVERSEIN:
-                return `${propertyName} IN ${paramValue}`;
-
-            case Condition.EQUAL:
-            default:
-                return `${propertyName} = ${paramValue}`;
-        }
-    }
-
     private appendPrefix(query: string): string {
-        if (query) return 'WHERE\n'+query;
+        if (query) return 'WHERE' + this.LINE_BREAK + query;
         return '';
     }
-
 }

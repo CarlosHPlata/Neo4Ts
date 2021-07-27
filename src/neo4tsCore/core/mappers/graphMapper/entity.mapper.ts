@@ -33,7 +33,7 @@ export class EntityMapper {
 
         for (let dto of nodesGraphs){
             let entity:Node = this.getInputNode(dto);
-            let alreadyCreated = this.entitiescreated.some(e => e.id === entity.id || e.alias === entity.alias);
+            let alreadyCreated = this.entitiescreated.some(e => (entity.id && e.id === entity.id) || e.alias === entity.alias);
 
             if (!alreadyCreated){
                 this.entitiescreated.push(entity);
@@ -42,7 +42,7 @@ export class EntityMapper {
         
         for (let dto of relationshipGraphs){
             let entity:Relationship = this.getInputRelationship(dto);
-            let alreadyCreated = this.entitiescreated.some(e => e.id === entity.id || e.alias === entity.alias);
+            let alreadyCreated = this.entitiescreated.some(e => (entity.id && e.id === entity.id) || e.alias === entity.alias);
 
             if (!alreadyCreated){
                 this.entitiescreated.push(entity);

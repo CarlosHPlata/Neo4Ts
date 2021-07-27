@@ -1,11 +1,15 @@
 import {IGraphEntity} from "../../../../../../core/entities/neoEntities/graph.entity";
 import {Node} from "../../../../../../core/entities/neoEntities/node.entity";
+import {ParamsHolder} from "../../../../../../core/entities/paramsHolder";
+import {MIN_CHARACTERS} from "../cypher.charactes";
+import {WhereServiceBuilder} from "../where";
 import {EntitiesMatchBuiler} from "./entitiesMatch.builder";
 import {OptionalEntitiesMatchBuilder} from "./optionalEntitiesMatch.builder";
-import {makeBuildSelect} from "./select.service";
+import {SelectBuilder} from "./select.service";
 
 class EntitiesMatchBuilerTest extends EntitiesMatchBuiler {
-    build(entities: IGraphEntity[], usedEntities: Node[]): string {
+    getCypher(entities: IGraphEntity[], params: ParamsHolder,usedEntities: Node[]): string {
+        if (params) params.addParammeters(entities);
         this.usedNodes = usedEntities.concat(entities.filter(n => n instanceof Node) as Node[]);
 
         const res = {
@@ -18,23 +22,43 @@ class EntitiesMatchBuilerTest extends EntitiesMatchBuiler {
 }
 
 const getObjResult = 
-    (builder: (entities: IGraphEntity[])=>string) => 
+    (builder: SelectBuilderTest) => 
     (entities: IGraphEntity[]) => 
 {
-    const [ normalRes, optionalRes ] = builder(entities).split('*');
+    const params: ParamsHolder = new ParamsHolder();
+    params.addParammeters(entities);
+    const [ normalRes, optionalRes ] = builder.getCypher(entities, params).split('*');
     return {normalRes: JSON.parse(normalRes), optionalRes: JSON.parse(optionalRes)};
 };
+
+class WhereBuilderTest extends WhereServiceBuilder {
+    getWhere(): string {
+        return '';
+    }
+}
+
+class SelectBuilderTest extends SelectBuilder {
+    constructor() {
+        super(MIN_CHARACTERS.LINE_BREAK, MIN_CHARACTERS.TAB_CHAR);
+        this.matchBuilder = new EntitiesMatchBuilerTest(MIN_CHARACTERS.LINE_BREAK, MIN_CHARACTERS.TAB_CHAR);
+        this.optionalMatchBuilder = new EntitiesMatchBuilerTest(MIN_CHARACTERS.LINE_BREAK, MIN_CHARACTERS.TAB_CHAR) as unknown as OptionalEntitiesMatchBuilder;
+        this.whereBuilder = new WhereBuilderTest(MIN_CHARACTERS.LINE_BREAK, MIN_CHARACTERS.TAB_CHAR);
+    }
+}
 
 describe('testing select builder', () => {
 
     describe('testing non optional things', () => {
         let entities: IGraphEntity[];
-        let builder: (entities: IGraphEntity[]) => string;
+        let builder: SelectBuilderTest;
         let parser: (entities: IGraphEntity[]) => any;
+        let params: ParamsHolder;
 
         beforeEach(() => {
             entities = [new Node('test',['label'])];
-            builder = makeBuildSelect(new EntitiesMatchBuilerTest(), new EntitiesMatchBuilerTest() as OptionalEntitiesMatchBuilder);
+            builder = new SelectBuilderTest();
+            params = new ParamsHolder();
+            params.addParammeters(entities);
             parser = getObjResult(builder);
         });
         

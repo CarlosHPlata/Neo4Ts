@@ -43,7 +43,7 @@ describe('testing entity mapper', () => {
 
             expect(result[0] instanceof Node).toBeTruthy();
 
-            const node: Node = result[0];
+            const node: Node = result[0] as Node;
             expect(node.labels[0]).toBe('test');
         });
 

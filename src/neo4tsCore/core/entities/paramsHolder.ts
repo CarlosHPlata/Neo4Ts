@@ -1,3 +1,5 @@
+import { Neo4jValueFactory } from "../../infrastructure/factories/neo4j.driver.value.factory";
+import { ParamValueFactory } from "../interfaces/abstract.param.value.factory";
 import {IGraphEntity} from "./neoEntities/graph.entity";
 import {Property} from "./neoEntities/property.entity";
 
@@ -6,12 +8,15 @@ type entitiesParams = Record<string, propertyHolder>
 
 export class ParamsHolder {
     private paramHolder: entitiesParams;
+    protected valueFactory: ParamValueFactory;
 
     constructor() {
         this.paramHolder = {};
+        this.valueFactory = Neo4jValueFactory;
     }
 
     addParammeters(graphEntities: IGraphEntity[]): void {
+        this.paramHolder = {};
         for (const entity of graphEntities) {
             this.addPropertiesParams(entity);
         }
@@ -31,14 +36,14 @@ export class ParamsHolder {
         }
     }
 
-    private generateParamName(property: Property): string  {
+    protected generateParamName(property: Property): string  {
         const r = Math.random().toString(36).substring(7);
         const date = new Date();
         return 'p' + Date.now() + date.getMilliseconds() + r + property.alias;
     }
 
     private generateParamValue(property: Property): any {
-        return property.value;
+        return this.valueFactory(property);
     }
 
     getParamName(entityAlias: string, propertyAlias: string): string {
@@ -59,7 +64,7 @@ export class ParamsHolder {
         return `$${paramName}`;
     }
 
-    getParamsForDB(): any {
+    getParamsForDatabaseUse(): any {
         const params: any = {};
 
         for (const [, propertyHolder] of Object.entries(this.paramHolder)) {

@@ -3,8 +3,8 @@ import {Node} from "./node.entity";
 import {Property} from "./property.entity";
 
 export class Relationship implements IGraphEntity {
-    isOptional?: boolean;
-    isReturnable?: boolean;
+    isReturnable: boolean = true;
+    isOptional: boolean = false;
     id?: string|number;
     properties?: Property[]
 

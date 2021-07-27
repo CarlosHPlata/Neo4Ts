@@ -1,26 +1,25 @@
-import {IGraphEntity} from "../../../../../../core/entities/neoEntities/graph.entity";
 import {Node} from "../../../../../../core/entities/neoEntities/node.entity";
 import {Relationship} from "../../../../../../core/entities/neoEntities/relationship.entity";
+import {CypherBuilder} from "../cypher.builder";
 import * as SelectUtils from "./select.utils";
 
-export class EntitiesMatchBuiler {
+export class EntitiesMatchBuiler extends CypherBuilder {
     protected usedNodes: Node[] = [];
-    protected TAB_CHAR = '\t';
-    protected LINE_BREAK = '\n';
 
     protected PREFIX_EMPTY = ',' ;
     protected PREFIX_NON_EMPTY = '';
     protected MATCH_BREAK = ',';
 
+
     getUsedNode(): Node[] {
         return this.usedNodes;
     }
 
-    build(entities: IGraphEntity[], usedNodes: Node[] = []): string {
+    protected buildCypher(usedNodes: Node[] = []): string {
         this.usedNodes = usedNodes;
 
-        const rels: Relationship[] = entities.filter(e => e instanceof Relationship) as Relationship[];
-        const nodes: Node[] = entities.filter(e => e instanceof Node) as Node[];
+        const rels: Relationship[] = this.entities.filter(e => e instanceof Relationship) as Relationship[];
+        const nodes: Node[] = this.entities.filter(e => e instanceof Node) as Node[];
 
         const relsMatch = this.buildRelsMatch(rels);
         const nodesMatch = this.buildNodesMatch(nodes);
@@ -31,36 +30,47 @@ export class EntitiesMatchBuiler {
         return query;
     }
     
-    protected buildRelsMatch(relationships: Relationship[]): string {
+    private buildRelsMatch(relationships: Relationship[]): string {
         let relsMatch: string = '';
 
         for (const rel of relationships) {
-            const sourceString = SelectUtils.buildNodeSelect(rel.source, this.usedNodes);
-            const targetString = SelectUtils.buildNodeSelect(rel.target, this.usedNodes);
-            const relString = SelectUtils.buildRelSelect(rel);
-
             let prefix = relsMatch != ''? this.getEmptyPrefix() : this.getNonEmptyPrefix();
-
-            relsMatch += prefix + `${sourceString}-${relString}->${targetString}`;
+            relsMatch += prefix + this.buildRelMatch(rel);
         }
 
         return relsMatch;
     }
+
+    protected buildRelMatch(rel: Relationship): string {
+        const sourceString = SelectUtils.buildNodeSelect(rel.source, this.usedNodes);
+        const targetString = SelectUtils.buildNodeSelect(rel.target, this.usedNodes);
+        const relString = SelectUtils.buildRelSelect(rel);
+
+        let relsMatch = `${sourceString}-${relString}->${targetString}`;
+
+        return relsMatch;
+    }
     
-    protected buildNodesMatch(nodes: Node[]): string {
+    private buildNodesMatch(nodes: Node[]): string {
         let nodesMatch: string = '';
 
         for (const node of nodes) {
             if (!this.usedNodes.some(n => n == node)) {
-                const nodeString = SelectUtils.buildNodeSelect(node, this.usedNodes);
-                let prefix = nodesMatch != ''? this.getEmptyPrefix(): this.getNonEmptyPrefix();
-
-                nodesMatch += prefix + nodeString;
+                let prefix = nodesMatch != ''? this.getEmptyPrefix() : this.getNonEmptyPrefix();
+                nodesMatch += prefix + this.buildNodeMatch(node);
             }
         }
 
         return nodesMatch;
     }
+
+    protected buildNodeMatch(node: Node): string {
+        const nodeString = SelectUtils.buildNodeSelect(node, this.usedNodes);
+        let nodeMatch = nodeString;
+
+        return nodeMatch;
+    }
+    
 
     private prepareQuery(nodesMatch: string, relsMatch: string): string {
         let query: string = nodesMatch;

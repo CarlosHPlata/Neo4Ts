@@ -31,7 +31,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "carlos-neo4ts",
+  "name": "neo4ts",
   "author": "kingskull619",
   "module": "dist/neo4ts.esm.js",
   "size-limit": [

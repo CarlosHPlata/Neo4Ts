@@ -1,5 +1,5 @@
-import {IGraphEntity} from '../../../../../core/entities/neoEntities/graph.entity';
-import {ParamsHolder} from '../../../../../core/entities/paramsHolder';
+import { IGraphEntity } from '../../../../../core/entities/neoEntities/graph.entity';
+import { ParamsHolder } from '../../../../../core/entities/paramsHolder';
 
 export abstract class CypherBuilder {
     protected entities: IGraphEntity[] = [];
@@ -8,9 +8,9 @@ export abstract class CypherBuilder {
     constructor(
         protected LINE_BREAK: string,
         protected TAB_CHAR: string
-    ) {}
+    ) { }
 
-    getCypher(entities: IGraphEntity[], params:ParamsHolder, ...extraParams: any[]): string {
+    getCypher(entities: IGraphEntity[], params: ParamsHolder, ...extraParams: any[]): string {
         this.entities = entities;
         this.params = params;
 

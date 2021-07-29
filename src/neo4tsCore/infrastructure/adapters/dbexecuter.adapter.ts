@@ -9,7 +9,10 @@ export class DBExecuter implements IDBExecuter {
         this.driverAdapter = DriverAdapter.getInstance();
     }
 
-    async run(query: string, parameters: any): Promise<any> {
+    async run(
+        query: string,
+        parameters: any
+    ): Promise<Neo4JDriver.QueryResult> {
         const session = this.getSession();
         let result = null;
 

@@ -26,7 +26,7 @@ export function MapToJson(map: any) {
     return newJson;
 }
 
-function getValue(recordValue: any) {
+export function getValue(recordValue: any) {
     let isNode = false;
     let isRelationship = false;
     let isArray = false;

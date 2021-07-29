@@ -6,6 +6,7 @@ import { CypherBuilder } from './cypherParts/cypher.builder';
 import { generateSkipAndLimit } from './cypherParts/decorators/skipLimit.builder';
 import { simpleReturnBuilder } from './cypherParts/return/return.builder.service';
 import { SelectBuilder } from './cypherParts/select/select.service';
+import * as Neo4JDriver from 'neo4j-driver';
 
 export class RetrieveBuilder extends DBAction {
     page: number | undefined;
@@ -37,7 +38,7 @@ export class RetrieveBuilder extends DBAction {
         return generateSkipAndLimit(this.page, this.size);
     }
 
-    executeRaw(): Promise<any> {
+    executeRaw(): Promise<Neo4JDriver.QueryResult> {
         const query: string = this.getQuery();
         const params: any = this.getParamsForDatabaseUse();
 

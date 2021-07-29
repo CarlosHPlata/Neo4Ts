@@ -8,7 +8,7 @@ export type Configuration = {
 
 /**
  * Set the configuration for Neo4TS to connec to to the DB using the Neo4J Driver
- * @param {Configuration} configuration 
+ * @param {Configuration} configuration
  */
 export const setConfiguration = (configuration: Configuration): void => {
     const manager: ConfigurationManager = ConfigurationManager.getInstance();

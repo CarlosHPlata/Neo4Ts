@@ -8,6 +8,8 @@ import { IDBExecuter } from '../interfaces/dbexecuter.adapter';
 import { IGraphEntity } from './neoEntities/graph.entity';
 import { ParamsHolder } from './paramsHolder';
 import * as GenericTranslator from '../../modules/resultParser/GenericTranslator';
+import * as Neo4JDriver from 'neo4j-driver';
+import * as Neo4TSTranslator from '../../modules/resultParser/Neo4TSTranslator';
 
 export abstract class DBAction {
     protected LINE_BREAK: string = MIN_CHARACTERS.LINE_BREAK;
@@ -21,6 +23,8 @@ export abstract class DBAction {
     ) => string = () => '';
 
     private paramsHolder: ParamsHolder;
+    private isFunctionOverrided: boolean = false;
+
     protected entities: IGraphEntity[] = [];
     protected executerAdapter: IDBExecuter;
 
@@ -54,7 +58,7 @@ export abstract class DBAction {
 
     /**
      * Converts the entities and return a prettified version of the cypher query in string form.
-     * @returns 
+     * @returns
      */
     getPrettyQuery(): string {
         this.LINE_BREAK = PRETTY_CHARACTERS.LINE_BREAK;
@@ -71,14 +75,14 @@ export abstract class DBAction {
     setEntities(entities: IGraphEntity[]): DBAction {
         this.entities = entities;
         this.setParameters();
-        return this
+        return this;
     }
 
     /**
      * Override the "return" cypher generator function, you can set a new string cypher function to inject
      * custom behaviour at the return part of your query
      * @example
-     * // this will return a cypher like: 
+     * // this will return a cypher like:
      * // match(n) return 'hello world';
      * action.overrideReturnAction( () => '\'hello world\'' ).getQuery();
      * @param callBack - This callback will be executed when Neo4TS generates the return part of the cypher query
@@ -87,13 +91,14 @@ export abstract class DBAction {
     overrideReturnAction(
         callBack: (entities: IGraphEntity[], params: ParamsHolder) => string
     ): DBAction {
+        this.isFunctionOverrided = true;
         this.returnBuilderCallBack = callBack;
         return this;
     }
 
     /**
      * Returns the param Holder which contains the parameters that will be used by this aciton.
-     * @returns 
+     * @returns
      */
     getParamHolder(): ParamsHolder {
         return this.paramsHolder;
@@ -102,11 +107,14 @@ export abstract class DBAction {
     /**
      * It will execute the action into the Data Base, using Neo4J Driver to connect and execute the cypher, using the entities assigned to this action
      * After executing the action it will try to parse the result to a more friendly JSON form.
-     * @returns 
+     * @returns
      */
     async execute(): Promise<any> {
         const rawRes = await this.executeRaw();
-        return GenericTranslator.MapToJson(rawRes);
+        if (this.isFunctionOverrided)
+            return GenericTranslator.MapToJson(rawRes);
+
+        return Neo4TSTranslator.mapToDto(rawRes, this.entities);
     }
 
     /**
@@ -114,7 +122,7 @@ export abstract class DBAction {
      * It will return the raw response from Neo4J Driver
      * @returns
      */
-    abstract executeRaw(): Promise<any>;
+    abstract executeRaw(): Promise<Neo4JDriver.QueryResult>;
 
     protected abstract buildQueryBody(params: ParamsHolder): string;
 

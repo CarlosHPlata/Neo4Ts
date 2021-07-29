@@ -1,9 +1,8 @@
-import {GraphEntity} from '../../dtos/graphentity.dto';
-import {Node} from '../../entities/neoEntities/node.entity';
-import {NodeMapper} from './node.mapper';
+import { GraphEntity } from '../../dtos/graphentity.dto';
+import { Node } from '../../entities/neoEntities/node.entity';
+import { NodeMapper } from './node.mapper';
 
 describe('testing the node mapper', () => {
-    
     let nodeMapper: NodeMapper;
     let graphNode: GraphEntity;
     let alias: string;
@@ -19,7 +18,6 @@ describe('testing the node mapper', () => {
 
         expect(result instanceof Node).toBeTruthy();
     });
-
 
     test('when sending a node with only id it returns a node with id', () => {
         graphNode.id = 'test';

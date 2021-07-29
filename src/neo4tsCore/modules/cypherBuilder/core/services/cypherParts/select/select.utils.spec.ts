@@ -1,11 +1,9 @@
-import {Node} from '../../../../../../core/entities/neoEntities/node.entity';
-import {Relationship} from '../../../../../../core/entities/neoEntities/relationship.entity';
-import {buildNodeSelect, buildRelSelect} from './select.utils';
+import { Node } from '../../../../../../core/entities/neoEntities/node.entity';
+import { Relationship } from '../../../../../../core/entities/neoEntities/relationship.entity';
+import { buildNodeSelect, buildRelSelect } from './select.utils';
 
 describe('testing select utils', () => {
-
     describe('testing build node select', () => {
-
         test('when sending a node it should return the node', () => {
             const node: Node = new Node('test', ['label']);
             const query: string = buildNodeSelect(node, []);
@@ -25,7 +23,7 @@ describe('testing select utils', () => {
             node.id = 'test';
             const query: string = buildNodeSelect(node, []);
 
-            expect(query).toBe('(test:label {ptSystemNodeId: \'test\'})');
+            expect(query).toBe("(test:label {ptSystemNodeId: 'test'})");
         });
 
         test('when a node does not have labels it should be removed from the query', () => {
@@ -34,7 +32,6 @@ describe('testing select utils', () => {
 
             expect(query).toBe('(test)');
         });
-
     });
 
     describe('testing build relationship', () => {
@@ -58,8 +55,5 @@ describe('testing select utils', () => {
 
             expect(query).toBe('[rel]');
         });
-
     });
-
-
 });

@@ -1,22 +1,28 @@
-import {IGraphEntity} from '../../../../../../core/entities/neoEntities/graph.entity';
-import {Node} from '../../../../../../core/entities/neoEntities/node.entity';
-import {Relationship} from '../../../../../../core/entities/neoEntities/relationship.entity';
-import {ParamsHolder} from '../../../../../../core/entities/paramsHolder';
-import {MIN_CHARACTERS} from '../cypher.charactes';
-import {EntitiesMatchBuiler} from './entitiesMatch.builder';
+import { IGraphEntity } from '../../../../../../core/entities/neoEntities/graph.entity';
+import { Node } from '../../../../../../core/entities/neoEntities/node.entity';
+import { Relationship } from '../../../../../../core/entities/neoEntities/relationship.entity';
+import { ParamsHolder } from '../../../../../../core/entities/paramsHolder';
+import { MIN_CHARACTERS } from '../cypher.charactes';
+import { EntitiesMatchBuiler } from './entitiesMatch.builder';
 
 describe('testing entities match builder', () => {
-
     let matchBuilder: EntitiesMatchBuiler;
     let entities: IGraphEntity[];
 
     beforeEach(() => {
         entities = [new Node('test', ['label'])];
-        matchBuilder = new EntitiesMatchBuiler(MIN_CHARACTERS.LINE_BREAK, MIN_CHARACTERS.TAB_CHAR);
+        matchBuilder = new EntitiesMatchBuiler(
+            MIN_CHARACTERS.LINE_BREAK,
+            MIN_CHARACTERS.TAB_CHAR
+        );
     });
 
     test('when sending a single node it returns the correct cypher', () => {
-        const query: string = matchBuilder.getCypher(entities, new ParamsHolder(), []);
+        const query: string = matchBuilder.getCypher(
+            entities,
+            new ParamsHolder(),
+            []
+        );
 
         expect(query).toBe('MATCH (test:label) ');
     });
@@ -28,10 +34,14 @@ describe('testing entities match builder', () => {
         entities = [
             nodeA,
             nodeB,
-            new Relationship('rel', ['Rel'], nodeA, nodeB)
+            new Relationship('rel', ['Rel'], nodeA, nodeB),
         ];
 
-        const query: string = matchBuilder.getCypher(entities, new ParamsHolder(), []);
+        const query: string = matchBuilder.getCypher(
+            entities,
+            new ParamsHolder(),
+            []
+        );
 
         expect(query).toBe('MATCH (a:A)-[rel:Rel]->(b:B) ');
     });
@@ -41,7 +51,11 @@ describe('testing entities match builder', () => {
         entities = [node];
         const used: Node[] = [node];
 
-        const query: string = matchBuilder.getCypher(entities, new ParamsHolder(), used);
+        const query: string = matchBuilder.getCypher(
+            entities,
+            new ParamsHolder(),
+            used
+        );
 
         expect(query).toBe('');
     });
@@ -54,7 +68,11 @@ describe('testing entities match builder', () => {
         const used: Node[] = [nodeA];
         entities = [nodeB, nodeA, rel];
 
-        const query: string = matchBuilder.getCypher(entities, new ParamsHolder(), used);
+        const query: string = matchBuilder.getCypher(
+            entities,
+            new ParamsHolder(),
+            used
+        );
 
         expect(query).toBe('MATCH (nodeA)-[rel:testRel]->(nodeB:testB) ');
     });
@@ -66,7 +84,11 @@ describe('testing entities match builder', () => {
 
         entities = [nodeB, nodeA, rel];
 
-        const query: string = matchBuilder.getCypher(entities, new ParamsHolder(), []);
+        const query: string = matchBuilder.getCypher(
+            entities,
+            new ParamsHolder(),
+            []
+        );
 
         expect(query).toBe('MATCH (nodeA:testA)-[rel:testRel]->(nodeB:testB) ');
     });
@@ -74,9 +96,13 @@ describe('testing entities match builder', () => {
     test('when sending a node with an id it should do a inner filter by id', () => {
         entities[0].id = 'testId';
 
-        const query: string = matchBuilder.getCypher(entities, new ParamsHolder(), []);
+        const query: string = matchBuilder.getCypher(
+            entities,
+            new ParamsHolder(),
+            []
+        );
 
-        expect(query).toBe('MATCH (test:label {ptSystemNodeId: \'testId\'}) ');
+        expect(query).toBe("MATCH (test:label {ptSystemNodeId: 'testId'}) ");
     });
 
     test('when sending a node with an id but is already used it will return just the node', () => {
@@ -87,7 +113,11 @@ describe('testing entities match builder', () => {
 
         entities = [nodeB, nodeA, rel];
 
-        const query: string = matchBuilder.getCypher(entities, new ParamsHolder(), [nodeA])
+        const query: string = matchBuilder.getCypher(
+            entities,
+            new ParamsHolder(),
+            [nodeA]
+        );
 
         expect(query).toBe('MATCH (nodeA)-[rel:testRel]->(nodeB:testB) ');
     });
@@ -99,17 +129,16 @@ describe('testing entities match builder', () => {
         const node4 = new Node('node4', ['test4']);
         const rel = new Relationship('rel', ['REL'], node1, node2);
 
-        entities = [
-            node1,
-            node2,
-            node3,
-            node4,
-            rel
-        ];
+        entities = [node1, node2, node3, node4, rel];
 
-        const query: string = matchBuilder.getCypher(entities, new ParamsHolder(), []);
+        const query: string = matchBuilder.getCypher(
+            entities,
+            new ParamsHolder(),
+            []
+        );
 
-        expect(query).toBe('MATCH (node3:test3), (node4:test4), (node1:test1)-[rel:REL]->(node2:test2) ');
+        expect(query).toBe(
+            'MATCH (node3:test3), (node4:test4), (node1:test1)-[rel:REL]->(node2:test2) '
+        );
     });
-
 });

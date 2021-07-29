@@ -1,15 +1,14 @@
-import {Node} from '../../../../../../core/entities/neoEntities/node.entity';
-import {Relationship} from '../../../../../../core/entities/neoEntities/relationship.entity';
-import {CypherBuilder} from '../cypher.builder';
+import { Node } from '../../../../../../core/entities/neoEntities/node.entity';
+import { Relationship } from '../../../../../../core/entities/neoEntities/relationship.entity';
+import { CypherBuilder } from '../cypher.builder';
 import * as SelectUtils from './select.utils';
 
 export class EntitiesMatchBuiler extends CypherBuilder {
     protected usedNodes: Node[] = [];
 
-    protected PREFIX_EMPTY = ',' ;
+    protected PREFIX_EMPTY = ',';
     protected PREFIX_NON_EMPTY = '';
     protected MATCH_BREAK = ',';
-
 
     getUsedNode(): Node[] {
         return this.usedNodes;
@@ -18,8 +17,12 @@ export class EntitiesMatchBuiler extends CypherBuilder {
     protected buildCypher(usedNodes: Node[] = []): string {
         this.usedNodes = usedNodes;
 
-        const rels: Relationship[] = this.entities.filter(e => e instanceof Relationship) as Relationship[];
-        const nodes: Node[] = this.entities.filter(e => e instanceof Node) as Node[];
+        const rels: Relationship[] = this.entities.filter(
+            e => e instanceof Relationship
+        ) as Relationship[];
+        const nodes: Node[] = this.entities.filter(
+            e => e instanceof Node
+        ) as Node[];
 
         const relsMatch = this.buildRelsMatch(rels);
         const nodesMatch = this.buildNodesMatch(nodes);
@@ -29,12 +32,15 @@ export class EntitiesMatchBuiler extends CypherBuilder {
 
         return query;
     }
-    
+
     private buildRelsMatch(relationships: Relationship[]): string {
         let relsMatch: string = '';
 
         for (const rel of relationships) {
-            let prefix = relsMatch != ''? this.getEmptyPrefix() : this.getNonEmptyPrefix();
+            let prefix =
+                relsMatch !== ''
+                    ? this.getEmptyPrefix()
+                    : this.getNonEmptyPrefix();
             relsMatch += prefix + this.buildRelMatch(rel);
         }
 
@@ -42,21 +48,30 @@ export class EntitiesMatchBuiler extends CypherBuilder {
     }
 
     protected buildRelMatch(rel: Relationship): string {
-        const sourceString = SelectUtils.buildNodeSelect(rel.source, this.usedNodes);
-        const targetString = SelectUtils.buildNodeSelect(rel.target, this.usedNodes);
+        const sourceString = SelectUtils.buildNodeSelect(
+            rel.source,
+            this.usedNodes
+        );
+        const targetString = SelectUtils.buildNodeSelect(
+            rel.target,
+            this.usedNodes
+        );
         const relString = SelectUtils.buildRelSelect(rel);
 
         let relsMatch = `${sourceString}-${relString}->${targetString}`;
 
         return relsMatch;
     }
-    
+
     private buildNodesMatch(nodes: Node[]): string {
         let nodesMatch: string = '';
 
         for (const node of nodes) {
-            if (!this.usedNodes.some(n => n == node)) {
-                let prefix = nodesMatch != ''? this.getEmptyPrefix() : this.getNonEmptyPrefix();
+            if (!this.usedNodes.some(n => n === node)) {
+                let prefix =
+                    nodesMatch !== ''
+                        ? this.getEmptyPrefix()
+                        : this.getNonEmptyPrefix();
                 nodesMatch += prefix + this.buildNodeMatch(node);
             }
         }
@@ -70,7 +85,6 @@ export class EntitiesMatchBuiler extends CypherBuilder {
 
         return nodeMatch;
     }
-    
 
     private prepareQuery(nodesMatch: string, relsMatch: string): string {
         let query: string = nodesMatch;
@@ -86,7 +100,7 @@ export class EntitiesMatchBuiler extends CypherBuilder {
     protected attachMatch(query: string): string {
         if (!query) return '';
 
-        return 'MATCH'+this.LINE_BREAK+query;
+        return 'MATCH' + this.LINE_BREAK + query;
     }
 
     protected getEmptyPrefix() {
@@ -96,5 +110,4 @@ export class EntitiesMatchBuiler extends CypherBuilder {
     protected getNonEmptyPrefix() {
         return this.PREFIX_NON_EMPTY + this.TAB_CHAR;
     }
-
 }

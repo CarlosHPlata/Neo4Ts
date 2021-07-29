@@ -1,4 +1,3 @@
-
 export class ConfigurationManager {
     private static instance: ConfigurationManager;
 
@@ -6,7 +5,7 @@ export class ConfigurationManager {
     databaseUser: string = '';
     databasePassword: string = '';
 
-    private constructor() { }
+    private constructor() {}
 
     public static getInstance(): ConfigurationManager {
         if (!ConfigurationManager.instance) {
@@ -16,7 +15,15 @@ export class ConfigurationManager {
         return ConfigurationManager.instance;
     }
 
-    setConfiguration({databaseUrl, databaseUser, databasePassword}: {databaseUrl: string, databaseUser: string, databasePassword: string}): void {
+    setConfiguration({
+        databaseUrl,
+        databaseUser,
+        databasePassword,
+    }: {
+        databaseUrl: string;
+        databaseUser: string;
+        databasePassword: string;
+    }): void {
         this.databaseUrl = databaseUrl;
         this.databaseUser = databaseUser;
         this.databasePassword = databasePassword;

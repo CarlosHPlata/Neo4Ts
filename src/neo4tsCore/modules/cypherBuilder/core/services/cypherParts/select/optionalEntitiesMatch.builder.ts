@@ -1,8 +1,8 @@
-import {IGraphEntity} from '../../../../../../core/entities/neoEntities/graph.entity';
-import {Node} from '../../../../../../core/entities/neoEntities/node.entity';
-import {Relationship} from '../../../../../../core/entities/neoEntities/relationship.entity';
-import {WhereServiceBuilder} from '../where';
-import {EntitiesMatchBuiler} from './entitiesMatch.builder';
+import { IGraphEntity } from '../../../../../../core/entities/neoEntities/graph.entity';
+import { Node } from '../../../../../../core/entities/neoEntities/node.entity';
+import { Relationship } from '../../../../../../core/entities/neoEntities/relationship.entity';
+import { WhereServiceBuilder } from '../where';
+import { EntitiesMatchBuiler } from './entitiesMatch.builder';
 
 export class OptionalEntitiesMatchBuilder extends EntitiesMatchBuiler {
     protected PREFIX_EMPTY = 'OPTIONAL MATCH ';
@@ -38,14 +38,16 @@ export class OptionalEntitiesMatchBuilder extends EntitiesMatchBuiler {
 
     protected buildRelMatch(rel: Relationship): string {
         const entities: IGraphEntity[] = [rel];
-        if (!this.usedNodes.some(n => n === rel.target)) entities.push(rel.target);
-        if (!this.usedNodes.some(n => n === rel.source)) entities.push(rel.source);
+        if (!this.usedNodes.some(n => n === rel.target))
+            entities.push(rel.target);
+        if (!this.usedNodes.some(n => n === rel.source))
+            entities.push(rel.source);
 
         const wherePart: string = this.getWherePart(entities);
 
         const query: string = super.buildRelMatch(rel);
 
-        if (query && wherePart) return query + this.LINE_BREAK  + wherePart;
+        if (query && wherePart) return query + this.LINE_BREAK + wherePart;
         return query;
     }
 

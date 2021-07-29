@@ -1,26 +1,25 @@
+export const validateOneTypeArray = (dtoarray: any[]): boolean => {
+    if (dtoarray.length > 0) {
+        let firstType = typeof dtoarray[0];
 
-export const validateOneTypeArray = (dtoarray:any[]):boolean => {
-    if (dtoarray.length > 0){
-        let firstType = typeof(dtoarray[0]);
-
-        if (!validateAllowdTypes(firstType)){
+        if (!validateAllowdTypes(firstType)) {
             return false;
         }
 
-        let res:boolean = true;
+        let res: boolean = true;
         for (let index = 0; index < dtoarray.length; index++) {
             let element = dtoarray[index];
-            if (typeof(element) != firstType){
+            if (typeof element != firstType) {
                 return false;
             }
         }
 
         return res;
     } else return true;
-}
+};
 
-const validateAllowdTypes = (valuetype:any):boolean => {
-    switch(valuetype){
+const validateAllowdTypes = (valuetype: any): boolean => {
+    switch (valuetype) {
         case 'number':
             return true;
         case 'boolean':
@@ -30,5 +29,4 @@ const validateAllowdTypes = (valuetype:any):boolean => {
         default:
             return false;
     }
-}
-
+};

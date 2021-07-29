@@ -5,12 +5,13 @@ export abstract class CypherBuilder {
     protected entities: IGraphEntity[] = [];
     protected params: ParamsHolder = new ParamsHolder();
 
-    constructor(
-        protected LINE_BREAK: string,
-        protected TAB_CHAR: string
-    ) { }
+    constructor(protected LINE_BREAK: string, protected TAB_CHAR: string) {}
 
-    getCypher(entities: IGraphEntity[], params: ParamsHolder, ...extraParams: any[]): string {
+    getCypher(
+        entities: IGraphEntity[],
+        params: ParamsHolder,
+        ...extraParams: any[]
+    ): string {
         this.entities = entities;
         this.params = params;
 
@@ -29,5 +30,4 @@ export abstract class CypherBuilder {
     setTabChar(tabchar: string): void {
         this.TAB_CHAR = tabchar;
     }
-
 }

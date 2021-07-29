@@ -1,7 +1,6 @@
-import {validateOneTypeArray} from './property.utils';
+import { validateOneTypeArray } from './property.utils';
 
 describe('testing validate onte type array', () => {
-
     test('when sending an empty array return true', () => {
         expect(validateOneTypeArray([])).toBeTruthy();
     });
@@ -17,5 +16,4 @@ describe('testing validate onte type array', () => {
     test('when sending an invalid array it returns false', () => {
         expect(validateOneTypeArray([1, 'string'])).toBeFalsy();
     });
-
 });

@@ -1,6 +1,5 @@
-
 describe('hello', () => {
-	test('blah', () => {
-		expect(1).toBe(1);
-	});
+    test('blah', () => {
+        expect(1).toBe(1);
+    });
 });

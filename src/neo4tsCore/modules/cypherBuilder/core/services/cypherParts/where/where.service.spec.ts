@@ -1,11 +1,19 @@
-import {IGraphEntity} from '../../../../../../core/entities/neoEntities/graph.entity';
-import {Node} from '../../../../../../core/entities/neoEntities/node.entity';
-import {Operator, Property, PropertyTypes} from '../../../../../../core/entities/neoEntities/property.entity';
-import {ParamsHolder} from '../../../../../../core/entities/paramsHolder';
-import {MIN_CHARACTERS} from '../cypher.charactes';
-import {WhereServiceBuilder} from './where.service';
+import { IGraphEntity } from '../../../../../../core/entities/neoEntities/graph.entity';
+import { Node } from '../../../../../../core/entities/neoEntities/node.entity';
+import {
+    Operator,
+    Property,
+    PropertyTypes,
+} from '../../../../../../core/entities/neoEntities/property.entity';
+import { ParamsHolder } from '../../../../../../core/entities/paramsHolder';
+import { MIN_CHARACTERS } from '../cypher.charactes';
+import { WhereServiceBuilder } from './where.service';
 
-const conditionFactory = (property: Property, propertyName: string, paramValue: string): string => {
+const conditionFactory = (
+    property: Property,
+    propertyName: string,
+    paramValue: string
+): string => {
     return `${property.type}.${propertyName} = ${paramValue}`;
 };
 
@@ -33,7 +41,6 @@ class WhereServiceBuilderTest extends WhereServiceBuilder {
     setParams(params: ParamsHolder): void {
         this.params = params;
     }
-
 }
 
 describe('testing where service', () => {
@@ -65,7 +72,9 @@ describe('testing where service', () => {
         params.addParammeters(entities);
         const query: string = whereService.getCypher(entities, params);
 
-        expect(query).toBe('WHERE string.test.prop = $prop AND integer.test.prop2 = $prop2 ');
+        expect(query).toBe(
+            'WHERE string.test.prop = $prop AND integer.test.prop2 = $prop2 '
+        );
     });
 
     test('when a node has one property but the operator is not and it should fail', () => {
@@ -75,7 +84,11 @@ describe('testing where service', () => {
         try {
             whereService.getCypher(entities, params);
         } catch (e) {
-            expect(e).toEqual(new Error('In where filter, the first filte should be always an \'AND\' operator'));
+            expect(e).toEqual(
+                new Error(
+                    "In where filter, the first filte should be always an 'AND' operator"
+                )
+            );
         }
     });
     test('when sending a node without properties it should return empty string', () => {

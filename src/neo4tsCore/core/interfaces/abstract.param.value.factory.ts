@@ -1,3 +1,3 @@
 import { Property } from '../entities';
 
-export type ParamValueFactory = (property: Property) => any; 
+export type ParamValueFactory = (property: Property) => any;

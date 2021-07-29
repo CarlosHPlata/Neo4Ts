@@ -1,16 +1,21 @@
-import {GraphEntity} from '../../dtos/graphentity.dto';
-import {GraphRelationship} from '../../dtos/graphrelationship.dto';
+import { GraphEntity } from '../../dtos/graphentity.dto';
+import { GraphRelationship } from '../../dtos/graphrelationship.dto';
 
-
-export const validateGraphEntity = (entity: GraphEntity | GraphRelationship): boolean => {
+export const validateGraphEntity = (
+    entity: GraphEntity | GraphRelationship
+): boolean => {
     if (entity.label && entity.labels) {
-        throw new Error('A graph entity can not have label and labels, just use one');
+        throw new Error(
+            'A graph entity can not have label and labels, just use one'
+        );
     }
 
     return validateGraphRelationship(entity as GraphRelationship);
 };
 
-export const validateGraphRelationship = (relationship: GraphRelationship): boolean => {
+export const validateGraphRelationship = (
+    relationship: GraphRelationship
+): boolean => {
     const from = relationship.from || relationship.source;
     const to = relationship.to || relationship.target;
 
@@ -25,4 +30,4 @@ export const validateGraphRelationship = (relationship: GraphRelationship): bool
     }
 
     return true;
-}
+};

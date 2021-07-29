@@ -1,4 +1,4 @@
-import {GraphEntity} from './graphentity.dto';
+import { GraphEntity } from './graphentity.dto';
 
 export type GraphRelationship = GraphEntity & {
     source?: string;
@@ -6,4 +6,3 @@ export type GraphRelationship = GraphEntity & {
     target?: string;
     to?: string;
 };
-

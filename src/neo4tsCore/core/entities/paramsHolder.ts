@@ -1,10 +1,10 @@
 import { Neo4jValueFactory } from '../../infrastructure/factories/neo4j.driver.value.factory';
 import { ParamValueFactory } from '../interfaces/abstract.param.value.factory';
-import {IGraphEntity} from './neoEntities/graph.entity';
-import {Property} from './neoEntities/property.entity';
+import { IGraphEntity } from './neoEntities/graph.entity';
+import { Property } from './neoEntities/property.entity';
 
-type propertyHolder= Record<string, {name: string, value: any}>;
-type entitiesParams = Record<string, propertyHolder>
+type propertyHolder = Record<string, { name: string; value: any }>;
+type entitiesParams = Record<string, propertyHolder>;
 
 export class ParamsHolder {
     private paramHolder: entitiesParams;
@@ -23,21 +23,21 @@ export class ParamsHolder {
     }
 
     addPropertiesParams(entity: IGraphEntity): void {
-        if (entity.properties && entity.properties.length == 0) return;
+        if (entity.properties && entity.properties.length === 0) return;
 
         this.paramHolder[entity.alias] = {};
         for (const property of entity.properties || []) {
-
             this.paramHolder[entity.alias][property.alias] = {
                 name: this.generateParamName(property),
                 value: this.generateParamValue(property),
             };
-
         }
     }
 
-    protected generateParamName(property: Property): string  {
-        const r = Math.random().toString(36).substring(7);
+    protected generateParamName(property: Property): string {
+        const r = Math.random()
+            .toString(36)
+            .substring(7);
         const date = new Date();
         return 'p' + Date.now() + date.getMilliseconds() + r + property.alias;
     }
@@ -47,13 +47,18 @@ export class ParamsHolder {
     }
 
     getParamName(entityAlias: string, propertyAlias: string): string {
-        const paramHolder: propertyHolder|undefined = this.paramHolder[entityAlias];
+        const paramHolder: propertyHolder | undefined = this.paramHolder[
+            entityAlias
+        ];
 
-        if (paramHolder == null) throw new Error('no param found by that entity alias');
+        if (paramHolder == null)
+            throw new Error('no param found by that entity alias');
 
-        const holder: {name:string, value:any}|undefined = paramHolder[propertyAlias];
+        const holder: { name: string; value: any } | undefined =
+            paramHolder[propertyAlias];
 
-        if (holder == null) throw new Error('no param found by that property alias');
+        if (holder == null)
+            throw new Error('no param found by that property alias');
 
         return holder.name;
     }

@@ -1,19 +1,4 @@
-
 const DEFAULT_FILTER_GROUP = 'Neo4TS_Main_Group';
-
-export class Property {
-    condition: Condition = Condition.EQUAL;
-    operator: Operator = Operator.AND;
-    isReturnable: boolean = true;
-    isFilter: boolean = true;
-    filterGroups: string[] = [DEFAULT_FILTER_GROUP];
-
-    constructor(
-        public alias: string,
-        public type: PropertyTypes,
-        public value: string | number | boolean | Date | string[] | number[] | boolean[] | Date[] | Record<string, any>,
-    ) {}
-}
 
 export enum PropertyTypes {
     INTEGER = 'integer',
@@ -45,5 +30,28 @@ export enum Operator {
     AND,
     OR,
     XOR,
-    NOT
+    NOT,
+}
+
+export class Property {
+    condition: Condition = Condition.EQUAL;
+    operator: Operator = Operator.AND;
+    isReturnable: boolean = true;
+    isFilter: boolean = true;
+    filterGroups: string[] = [DEFAULT_FILTER_GROUP];
+
+    constructor(
+        public alias: string,
+        public type: PropertyTypes,
+        public value:
+            | string
+            | number
+            | boolean
+            | Date
+            | string[]
+            | number[]
+            | boolean[]
+            | Date[]
+            | Record<string, any>
+    ) {}
 }

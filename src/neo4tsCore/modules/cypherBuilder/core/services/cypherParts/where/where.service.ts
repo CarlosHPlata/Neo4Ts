@@ -1,16 +1,23 @@
-import {IGraphEntity} from '../../../../../../core/entities/neoEntities/graph.entity';
-import {Operator, Property} from '../../../../../../core/entities/neoEntities/property.entity';
-import {ParamsHolder} from '../../../../../../core/entities/paramsHolder';
-import {CypherBuilder} from '../cypher.builder';
+import { IGraphEntity } from '../../../../../../core/entities/neoEntities/graph.entity';
+import {
+    Operator,
+    Property,
+} from '../../../../../../core/entities/neoEntities/property.entity';
+import { ParamsHolder } from '../../../../../../core/entities/paramsHolder';
+import { CypherBuilder } from '../cypher.builder';
 import * as FilterFactory from './filterCondition.factory';
 import * as OperatorFactory from './operator.factory';
 
 export class WhereServiceBuilder extends CypherBuilder {
     private doesFirstPass: boolean = false;
 
-    protected filterAndConditionFactory: (property: Property, propertyName: string, paramValue:string)=>string;
+    protected filterAndConditionFactory: (
+        property: Property,
+        propertyName: string,
+        paramValue: string
+    ) => string;
     protected operatorFactory: (property: Property) => string;
-    
+
     protected entities: IGraphEntity[];
     protected params: ParamsHolder;
 
@@ -25,8 +32,7 @@ export class WhereServiceBuilder extends CypherBuilder {
     protected buildCypher(): string {
         let query: string = this.generateFiltersQueryString();
 
-        if (query.length > 0)
-            query = this.appendPrefix(query);
+        if (query.length > 0) query = this.appendPrefix(query);
 
         return query;
     }
@@ -45,16 +51,19 @@ export class WhereServiceBuilder extends CypherBuilder {
     private generateFiltersStringForEntity(entity: IGraphEntity) {
         let query: string = '';
 
-        for (const property of entity.properties||[]) {
+        for (const property of entity.properties || []) {
             query += this.generateFiltersStringForProperty(property, entity);
         }
 
         return query;
     }
 
-    private generateFiltersStringForProperty(property: Property, parentEntity: IGraphEntity) {
+    private generateFiltersStringForProperty(
+        property: Property,
+        parentEntity: IGraphEntity
+    ) {
         let query: string = '';
-        
+
         query += this.generateOperator(property);
 
         query += this.generateFilterWithCondition(property, parentEntity);
@@ -66,29 +75,47 @@ export class WhereServiceBuilder extends CypherBuilder {
         let operator: string = '';
 
         if (!this.doesFirstPass) {
-            if (property.operator != Operator.AND) {
-                throw new Error('In where filter, the first filte should be always an \'AND\' operator');
+            if (property.operator !== Operator.AND) {
+                throw new Error(
+                    "In where filter, the first filte should be always an 'AND' operator"
+                );
             }
 
             operator += this.TAB_CHAR;
             this.doesFirstPass = true;
         } else {
-            operator += this.LINE_BREAK + this.TAB_CHAR + this.operatorFactory(property) + ' ';
+            operator +=
+                this.LINE_BREAK +
+                this.TAB_CHAR +
+                this.operatorFactory(property) +
+                ' ';
         }
 
         return operator;
     }
 
-    private generateFilterWithCondition(property: Property, parentEntity: IGraphEntity): string {
-
+    private generateFilterWithCondition(
+        property: Property,
+        parentEntity: IGraphEntity
+    ): string {
         let propertyName = this.generatePropertyName(property, parentEntity);
-        let paramValue = this.params.getParamNameForQuery(parentEntity.alias, property.alias);
+        let paramValue = this.params.getParamNameForQuery(
+            parentEntity.alias,
+            property.alias
+        );
 
-        return this.filterAndConditionFactory(property, propertyName, paramValue);
+        return this.filterAndConditionFactory(
+            property,
+            propertyName,
+            paramValue
+        );
     }
 
-    private generatePropertyName(property: Property, parentEntity: IGraphEntity): string {
-        return `${parentEntity.alias}.${property.alias}`; 
+    private generatePropertyName(
+        property: Property,
+        parentEntity: IGraphEntity
+    ): string {
+        return `${parentEntity.alias}.${property.alias}`;
     }
 
     private appendPrefix(query: string): string {

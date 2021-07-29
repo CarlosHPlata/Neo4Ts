@@ -1,5 +1,5 @@
-import {IGraphEntity} from './graph.entity';
-import {Property} from './property.entity';
+import { IGraphEntity } from './graph.entity';
+import { Property } from './property.entity';
 
 export class Node implements IGraphEntity {
     isReturnable: boolean = true;
@@ -7,8 +7,5 @@ export class Node implements IGraphEntity {
     id?: string | number;
     properties: Property[] = [];
 
-    constructor(
-        public alias: string,
-        public labels: string[],
-    ) {}
-} 
+    constructor(public alias: string, public labels: string[]) {}
+}

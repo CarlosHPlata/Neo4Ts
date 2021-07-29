@@ -1,11 +1,11 @@
-import {IGraphEntity} from '../../../../core/entities/neoEntities/graph.entity';
-import {Node} from '../../../../core/entities/neoEntities/node.entity';
-import {RetrieveBuilder} from './retrieve.builder';
+import { IGraphEntity } from '../../../../core/entities/neoEntities/graph.entity';
+import { Node } from '../../../../core/entities/neoEntities/node.entity';
+import { RetrieveBuilder } from './retrieve.builder';
 
 class RetrieveBuilderTest extends RetrieveBuilder {
     constructor(entities: IGraphEntity[]) {
         super(entities, {
-            run: async () => ''
+            run: async () => '',
         });
     }
 }
@@ -28,6 +28,8 @@ describe('test retrieve builder', () => {
         retrieveBuilder.page = 1;
         retrieveBuilder.size = 10;
 
-        expect(retrieveBuilder.getQuery()).toBe('MATCH (test:test) RETURN test SKIP 10 LIMIT 10');
+        expect(retrieveBuilder.getQuery()).toBe(
+            'MATCH (test:test) RETURN test SKIP 10 LIMIT 10'
+        );
     });
 });

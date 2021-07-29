@@ -1,34 +1,32 @@
-import {Condition} from '../../entities/neoEntities/property.entity';
+import { Condition } from '../../entities/neoEntities/property.entity';
 
-
-export const PropertyConditionFactory = (value:string): Condition => {
-
-    switch(value.toLowerCase()){
+export const PropertyConditionFactory = (value: string): Condition => {
+    switch (value.toLowerCase()) {
         case 'equal':
         case '=':
             return Condition.EQUAL;
-        
+
         case 'different':
         case '<>':
         case '!=':
             return Condition.DIFFERENT;
-        
+
         case 'contains':
             return Condition.CONTAINS;
-        
+
         case 'not contains':
         case 'notcontains':
         case '!contains':
             return Condition.NOTCONTAINS;
-        
+
         case 'starts':
         case 'starts with':
             return Condition.STARTS;
-        
+
         case 'ends':
         case 'ends with':
             return Condition.ENDS;
-        
+
         case 'greater':
         case '>':
             return Condition.GREATER;
@@ -62,5 +60,4 @@ export const PropertyConditionFactory = (value:string): Condition => {
         default:
             throw new Error('the operator you provide is not supported');
     }
-}
-
+};

@@ -1,11 +1,14 @@
-import {IGraphEntity} from '../../../../../../core/entities/neoEntities/graph.entity';
-import {Node} from '../../../../../../core/entities/neoEntities/node.entity';
-import {Property, PropertyTypes} from '../../../../../../core/entities/neoEntities/property.entity';
-import {Relationship} from '../../../../../../core/entities/neoEntities/relationship.entity';
-import {ParamsHolder} from '../../../../../../core/entities/paramsHolder';
-import {MIN_CHARACTERS} from '../cypher.charactes';
-import {WhereServiceBuilder} from '../where';
-import {OptionalEntitiesMatchBuilder} from './optionalEntitiesMatch.builder';
+import { IGraphEntity } from '../../../../../../core/entities/neoEntities/graph.entity';
+import { Node } from '../../../../../../core/entities/neoEntities/node.entity';
+import {
+    Property,
+    PropertyTypes,
+} from '../../../../../../core/entities/neoEntities/property.entity';
+import { Relationship } from '../../../../../../core/entities/neoEntities/relationship.entity';
+import { ParamsHolder } from '../../../../../../core/entities/paramsHolder';
+import { MIN_CHARACTERS } from '../cypher.charactes';
+import { WhereServiceBuilder } from '../where';
+import { OptionalEntitiesMatchBuilder } from './optionalEntitiesMatch.builder';
 
 class WhereBuilder extends WhereServiceBuilder {
     getCypher(entities: IGraphEntity[]): string {
@@ -27,7 +30,10 @@ class WhereBuilder extends WhereServiceBuilder {
 class OptionalEntitiesMatchBuilderTest extends OptionalEntitiesMatchBuilder {
     constructor() {
         super(MIN_CHARACTERS.LINE_BREAK, MIN_CHARACTERS.TAB_CHAR);
-        this.whereService = new WhereBuilder(MIN_CHARACTERS.LINE_BREAK, MIN_CHARACTERS.TAB_CHAR);
+        this.whereService = new WhereBuilder(
+            MIN_CHARACTERS.LINE_BREAK,
+            MIN_CHARACTERS.TAB_CHAR
+        );
     }
 
     getWhereBuilder(): WhereServiceBuilder {
@@ -56,11 +62,11 @@ describe('testing optional match builder', () => {
     test('when sending a single relationship it returns the correct cypher', () => {
         const node1 = new Node('a', ['a']);
         const node2 = new Node('b', ['b']);
-        
+
         entities = [
             node1,
             node2,
-            new Relationship('rel', ['REL'], node1, node2)
+            new Relationship('rel', ['REL'], node1, node2),
         ];
         params.addParammeters(entities);
 
@@ -69,7 +75,6 @@ describe('testing optional match builder', () => {
         expect(query).toBe('OPTIONAL MATCH (a:a)-[rel:REL]->(b:b) ');
     });
 
-
     test('when sending a node with a relationship and several nodes it returns the correct query', () => {
         const node1 = new Node('node1', ['test1']);
         const node2 = new Node('node2', ['test2']);
@@ -77,24 +82,19 @@ describe('testing optional match builder', () => {
         const node4 = new Node('node4', ['test4']);
         const rel = new Relationship('rel', ['REL'], node1, node2);
 
-        entities = [
-            node1,
-            node2,
-            node3,
-            node4,
-            rel
-        ];
+        entities = [node1, node2, node3, node4, rel];
         params.addParammeters(entities);
 
         const query: string = optionalBuilder.getCypher(entities, params);
-        const expected = 'OPTIONAL MATCH (node3:test3) OPTIONAL MATCH (node4:test4) OPTIONAL MATCH (node1:test1)-[rel:REL]->(node2:test2) ';
+        const expected =
+            'OPTIONAL MATCH (node3:test3) OPTIONAL MATCH (node4:test4) OPTIONAL MATCH (node1:test1)-[rel:REL]->(node2:test2) ';
 
         expect(query).toBe(expected);
     });
 
     test('when sending a node with properties filters it should filter after the match', () => {
         const node = new Node('test', ['label']);
-        node.properties = [ new Property('prop', PropertyTypes.STRING, 'hello') ];
+        node.properties = [new Property('prop', PropertyTypes.STRING, 'hello')];
         entities = [node];
         params.addParammeters(entities);
 
@@ -106,7 +106,7 @@ describe('testing optional match builder', () => {
         const node1 = new Node('a', ['a']);
         const node2 = new Node('b', ['b']);
         const rel = new Relationship('rel', ['REL'], node1, node2);
-        rel.properties = [ new Property('prop', PropertyTypes.STRING, 'hello') ];
+        rel.properties = [new Property('prop', PropertyTypes.STRING, 'hello')];
         entities = [node1, node2, rel];
         params.addParammeters(entities);
 
@@ -119,12 +119,15 @@ describe('testing optional match builder', () => {
         const node2 = new Node('b', ['b']);
         const rel = new Relationship('rel', ['REL'], node1, node2);
         const rel2 = new Relationship('rel2', ['REL'], node1, node2);
-        node1.properties = [ new Property('prop', PropertyTypes.STRING, 'hello') ];
+        node1.properties = [
+            new Property('prop', PropertyTypes.STRING, 'hello'),
+        ];
         entities = [node1, node2, rel, rel2];
         params.addParammeters(entities);
 
         const query: string = optionalBuilder.getCypher(entities, params);
-        expect(query).toBe('OPTIONAL MATCH (a:a)-[rel:REL]->(b:b) prop OPTIONAL MATCH (a)-[rel2:REL]->(b) ');
+        expect(query).toBe(
+            'OPTIONAL MATCH (a:a)-[rel:REL]->(b:b) prop OPTIONAL MATCH (a)-[rel2:REL]->(b) '
+        );
     });
-
 });

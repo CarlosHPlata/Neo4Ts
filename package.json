@@ -56,5 +56,12 @@
     },
     "dependencies": {
         "neo4j-driver": "^4.3.1"
-    }
+    },
+    "keywords": [
+        "neo4j",
+        "graph",
+        "database",
+        "query",
+        "cypher"
+    ]
 }

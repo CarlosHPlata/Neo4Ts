@@ -80,3 +80,8 @@ import { Neo4TS } from 'neo4ts';
 
 const dbAction = Neo4TS.findAll(...).getQuery();
 ```
+
+This will return the query as:
+```txt
+MATCH (person :Human:Person) return person
+```

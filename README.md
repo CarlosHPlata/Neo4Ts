@@ -1,5 +1,8 @@
 # Neo4 TS
 
+Hello my name is Carlos aka Kingskull619, [Neo4TS](https://github.com/kingskull619/Neo4Ts) is a beta project made by me, as a necesity from various projects I'm working on.
+Is a in progress project, feel free to fork and help if you want.
+
 Neo4TS is a Neo4J Wrapper Object modeling tool designed to work in an asynchronous environment. You can use it instead of writting queries.
 Fully support Neo4J 3.0^ and 4.0^.
 

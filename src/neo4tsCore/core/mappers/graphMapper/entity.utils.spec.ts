@@ -30,38 +30,6 @@ describe('testing entity utils', () => {
 
             expect(result).toBeUndefined();
         });
-
-        test('test when sending entity with properties', () => {
-            const graph: GraphEntity = { properties: { id: 1 } };
-            const result: string | number | undefined = getId(graph);
-
-            expect(result).toBe(1);
-        });
-
-        test('test when sending entity with properties ptSystemNodeId', () => {
-            const graph: GraphEntity = { properties: { ptSystemNodeId: 1 } };
-            const result: string | number | undefined = getId(graph);
-
-            expect(result).toBe(1);
-        });
-
-        test('test when sending entity with properties ptSystemRelationshipId', () => {
-            const graph: GraphEntity = {
-                properties: { ptSystemRelationshipId: 1 },
-            };
-            const result: string | number | undefined = getId(graph);
-
-            expect(result).toBe(1);
-        });
-
-        test('test when sending entity with properties as object', () => {
-            const graph: GraphEntity = {
-                properties: { id: { type: 'number', value: 1 } },
-            };
-            const result: string | number | undefined = getId(graph);
-
-            expect(result).toBe(1);
-        });
     });
 
     describe('testing generateFakeAlias', () => {

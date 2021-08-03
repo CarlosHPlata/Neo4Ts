@@ -98,4 +98,21 @@ describe('testing where service', () => {
 
         expect(query).toBe('');
     });
+
+    test('when more than one node is passed it generates the right filter', () => {
+        const node1 = new Node('node1', ['node1']);
+        node1.properties.push(new Property('prop', PropertyTypes.INTEGER, 2));
+        const node2 = new Node('node2', ['node2']);
+        node2.properties.push(new Property('prop2', PropertyTypes.INTEGER, 2));
+        entities = [node1, node2];
+        params.addParammeters(entities);
+
+        expect(whereService.getCypher(entities, params)).toBe('WHERE integer.node1.prop = $prop AND integer.node2.prop2 = $prop2 ');
+    });
+
+    test('when an entity has an id it will generate the id where and skip the properties', () => {
+        node.id = 123;
+
+        expect(whereService.getCypher(entities, params)).toBe('WHERE id(test) = 123 ');
+    });
 });

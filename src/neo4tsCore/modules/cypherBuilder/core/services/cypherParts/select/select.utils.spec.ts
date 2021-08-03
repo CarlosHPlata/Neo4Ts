@@ -18,14 +18,6 @@ describe('testing select utils', () => {
             expect(query).toBe('(test)');
         });
 
-        test('when sending a node with an id it should do the inner filter', () => {
-            const node: Node = new Node('test', ['label']);
-            node.id = 'test';
-            const query: string = buildNodeSelect(node, []);
-
-            expect(query).toBe("(test:label {ptSystemNodeId: 'test'})");
-        });
-
         test('when a node does not have labels it should be removed from the query', () => {
             const node: Node = new Node('test', []);
             const query: string = buildNodeSelect(node, []);

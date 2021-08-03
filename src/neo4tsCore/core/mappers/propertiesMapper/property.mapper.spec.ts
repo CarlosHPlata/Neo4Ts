@@ -31,24 +31,6 @@ describe('testing property mapper', () => {
         expect(result[0].value).toBe('test');
     });
 
-    test('passing object with ptSystemNodeId does not returns that value', () => {
-        properties = { ptSystemNodeId: 'test' };
-        const result: Property[] = propertyMapper.getPropertiesFromDto(
-            properties
-        );
-
-        expect(result.length).toBe(0);
-    });
-
-    test('passing object with ptSystemRelationshipId does not return that value', () => {
-        properties = { ptSystemRelationshipId: 'test' };
-        const result: Property[] = propertyMapper.getPropertiesFromDto(
-            properties
-        );
-
-        expect(result.length).toBe(0);
-    });
-
     test('passing a date propertie returns a datetime type property', () => {
         const date = new Date();
         properties = { prop: date };

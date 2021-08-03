@@ -34,31 +34,27 @@ export class EntityMapper {
 
         for (let dto of nodesGraphs) {
             let entity: Node = this.getInputNode(dto);
-            let alreadyCreated = this.entitiescreated.some(
-                e =>
-                    (entity.id && e.id === entity.id) ||
-                    e.alias === entity.alias
-            );
-
-            if (!alreadyCreated) {
+            if (!this.isEntitieAlreadyCreated(entity)) {
                 this.entitiescreated.push(entity);
             }
         }
 
         for (let dto of relationshipGraphs) {
             let entity: Relationship = this.getInputRelationship(dto);
-            let alreadyCreated = this.entitiescreated.some(
-                e =>
-                    (entity.id && e.id === entity.id) ||
-                    e.alias === entity.alias
-            );
-
-            if (!alreadyCreated) {
+            if (!this.isEntitieAlreadyCreated(entity)) {
                 this.entitiescreated.push(entity);
             }
         }
 
         return this.entitiescreated;
+    }
+
+    private isEntitieAlreadyCreated(entity: IGraphEntity): boolean {
+        return this.entitiescreated.some(
+            e =>
+                (entity.id && e.id === entity.id) ||
+                e.alias === entity.alias
+        );
     }
 
     private getArrayOfGraphAbstraction(

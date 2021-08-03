@@ -6,21 +6,17 @@ export const getId = (
     let id: string | number | undefined;
 
     let idValue = null;
+
     if (graphEntity.id) {
         idValue = graphEntity.id;
-    } else if (graphEntity.properties) {
-        idValue =
-            graphEntity.properties.id ||
-            graphEntity.properties.ptSystemNodeId ||
-            graphEntity.properties.ptSystemRelationshipId;
-    }
+    } 
 
     if (idValue != null) {
-        if (typeof idValue === 'object' && idValue.value) {
-            id = idValue.value;
-        } else if (typeof idValue == 'string' || typeof idValue == 'number') {
-            id = idValue;
-        }
+        //if (typeof idValue === 'object' && idValue.value) {
+            //id = idValue.value;
+        //} else if (typeof idValue == 'string' || typeof idValue == 'number') {
+        id = idValue;
+        //}
     }
 
     return id;

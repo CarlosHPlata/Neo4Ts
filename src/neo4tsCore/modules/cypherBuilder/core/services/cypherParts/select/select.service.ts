@@ -27,6 +27,7 @@ export class SelectBuilder extends CypherBuilder {
         const optionalEntities: IGraphEntity[] = this.entities.filter(
             e => e.isOptional
         );
+
         let usedEntities: Node[] = [];
         let query: string = '';
 

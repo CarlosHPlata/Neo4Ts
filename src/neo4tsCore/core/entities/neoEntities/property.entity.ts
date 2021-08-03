@@ -9,6 +9,7 @@ export enum PropertyTypes {
     TIME = 'time',
     DATETIME = 'datetime',
     ARRAY = 'array',
+    INDEX = 'index',
 }
 
 export enum Condition {

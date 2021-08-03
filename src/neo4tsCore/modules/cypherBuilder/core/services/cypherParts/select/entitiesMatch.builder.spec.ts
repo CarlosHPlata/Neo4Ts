@@ -93,18 +93,6 @@ describe('testing entities match builder', () => {
         expect(query).toBe('MATCH (nodeA:testA)-[rel:testRel]->(nodeB:testB) ');
     });
 
-    test('when sending a node with an id it should do a inner filter by id', () => {
-        entities[0].id = 'testId';
-
-        const query: string = matchBuilder.getCypher(
-            entities,
-            new ParamsHolder(),
-            []
-        );
-
-        expect(query).toBe("MATCH (test:label {ptSystemNodeId: 'testId'}) ");
-    });
-
     test('when sending a node with an id but is already used it will return just the node', () => {
         const nodeA = new Node('nodeA', ['testA']);
         nodeA.id = 'test';

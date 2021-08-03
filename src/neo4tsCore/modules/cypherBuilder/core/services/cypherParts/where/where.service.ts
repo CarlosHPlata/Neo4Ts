@@ -2,10 +2,12 @@ import { IGraphEntity } from '../../../../../../core/entities/neoEntities/graph.
 import {
     Operator,
     Property,
+    PropertyTypes,
 } from '../../../../../../core/entities/neoEntities/property.entity';
 import { ParamsHolder } from '../../../../../../core/entities/paramsHolder';
 import { CypherBuilder } from '../cypher.builder';
 import * as FilterFactory from './filterCondition.factory';
+import * as InexFilter from './indexFilter';
 import * as OperatorFactory from './operator.factory';
 
 export class WhereServiceBuilder extends CypherBuilder {
@@ -17,6 +19,7 @@ export class WhereServiceBuilder extends CypherBuilder {
         paramValue: string
     ) => string;
     protected operatorFactory: (property: Property) => string;
+    protected indexFilterCreator: (propery: Property) => string;
 
     protected entities: IGraphEntity[];
     protected params: ParamsHolder;
@@ -25,6 +28,7 @@ export class WhereServiceBuilder extends CypherBuilder {
         super(lineBreak, tabChar);
         this.filterAndConditionFactory = FilterFactory.filterConditionFactory;
         this.operatorFactory = OperatorFactory.operatorFactory;
+        this.indexFilterCreator = InexFilter.createIndexFilter;
         this.entities = [];
         this.params = new ParamsHolder();
     }
@@ -42,8 +46,18 @@ export class WhereServiceBuilder extends CypherBuilder {
         this.doesFirstPass = false;
 
         for (const entity of this.entities) {
-            query += this.generateFiltersStringForEntity(entity);
+            if (entity.id) query += this.generateFilterStringForEntityWithId(entity);
+            else query += this.generateFiltersStringForEntity(entity);
         }
+
+        return query;
+    }
+
+    private generateFilterStringForEntityWithId(entity: IGraphEntity): string {
+        const indexProperty: Property = new Property(entity.alias, PropertyTypes.INDEX, entity.id || '');
+
+        let query: string = this.generateOperator(indexProperty);
+        query += this.indexFilterCreator(indexProperty);
 
         return query;
     }

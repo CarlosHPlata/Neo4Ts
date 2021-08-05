@@ -22,29 +22,21 @@ export class PropertyMapper {
                 //if property is a date object
                 if (dbdto[key] instanceof Date) {
                     props.push(
-                        new Property(
-                            key,
-                            PropertyTypes.DATETIME,
-                            dbdto[key]
-                        )
+                        new Property(key, PropertyTypes.DATETIME, dbdto[key])
                     );
 
-                //if property is an array
+                    //if property is an array
                 } else if (Array.isArray(dbdto[key])) {
                     if (validateOneTypeArray(dbdto[key] as any[])) {
                         props.push(
-                            new Property(
-                                key,
-                                PropertyTypes.ARRAY,
-                                dbdto[key]
-                            )
+                            new Property(key, PropertyTypes.ARRAY, dbdto[key])
                         );
                     } else
                         throw new Error(
                             'Array property not valid, arrays can contains only ONE primitive type'
                         );
 
-                //if property is an object
+                    //if property is an object
                 } else if (typeof dbdto[key] === 'object') {
                     props.push(
                         this.propertyObjectMapper.getPropertyIfObject(
@@ -53,7 +45,7 @@ export class PropertyMapper {
                         )
                     );
 
-                //if property is a primitive type
+                    //if property is a primitive type
                 } else {
                     props.push(this.getPropertyFromValue(key, dbdto[key]));
                 }

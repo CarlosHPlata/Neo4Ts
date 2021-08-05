@@ -31,4 +31,24 @@ export class ActionService {
         const res: DBAction = this.findAll(dto, 0, 1);
         return res;
     }
+
+    create(dto: GraphAbstraction, target: string): DBAction {
+        const entities: IGraphEntity[] = this.entityMapper.getEntitiesFromDtoArray(
+            dto
+        );
+
+        const targetEntity = entities.find(e => e.alias === target);
+        if (targetEntity == null) {
+            throw new Error(
+                'The alias used to target the create entity does not exists'
+            );
+        }
+
+        const action: DBAction = this.actionPort.generateCreateAction(
+            entities,
+            targetEntity
+        );
+
+        return action;
+    }
 }

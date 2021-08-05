@@ -1,11 +1,12 @@
 import { IGraphEntity } from '../../../../core/entities/neoEntities/graph.entity';
 import { Node } from '../../../../core/entities/neoEntities/node.entity';
 import { RetrieveBuilder } from './retrieve.builder';
+import * as Neo4JDriver from 'neo4j-driver';
 
 class RetrieveBuilderTest extends RetrieveBuilder {
     constructor(entities: IGraphEntity[]) {
         super(entities, {
-            run: async () => '',
+            run: async () => ({} as Neo4JDriver.QueryResult),
         });
     }
 }

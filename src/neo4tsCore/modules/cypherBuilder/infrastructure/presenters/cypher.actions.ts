@@ -1,6 +1,7 @@
 import { DBAction } from '../../../../core/entities/db.action';
 import { IGraphEntity } from '../../../../core/entities/neoEntities/graph.entity';
 import { IQueryPort } from '../../../../core/interfaces/query.port';
+import { CreateBuilder } from '../../core/services/create.builder';
 import { RetrieveBuilder } from '../../core/services/retrieve.builder';
 
 export class CypherActions implements IQueryPort {
@@ -14,5 +15,13 @@ export class CypherActions implements IQueryPort {
         retrieve.size = size;
 
         return retrieve;
+    }
+
+    generateCreateAction(
+        entities: IGraphEntity[],
+        target: IGraphEntity
+    ): DBAction {
+        const create = new CreateBuilder(entities, target);
+        return create;
     }
 }

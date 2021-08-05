@@ -9,11 +9,11 @@ export const getId = (
 
     if (graphEntity.id) {
         idValue = graphEntity.id;
-    } 
+    }
 
     if (idValue != null) {
         //if (typeof idValue === 'object' && idValue.value) {
-            //id = idValue.value;
+        //id = idValue.value;
         //} else if (typeof idValue == 'string' || typeof idValue == 'number') {
         id = idValue;
         //}

@@ -33,7 +33,7 @@
         "tabWidth": 4,
         "bracketSpacing": true
     },
-    "name": "neo4ts",
+    "name": "carlos-neo4ts",
     "author": "kingskull619",
     "module": "dist/neo4ts.esm.js",
     "size-limit": [
@@ -56,6 +56,10 @@
     },
     "dependencies": {
         "neo4j-driver": "^4.3.1"
+    },
+    "resolutions": {
+        "**/@typescript-eslint/eslint-plugin": "^4.1.1",
+        "**/@typescript-eslint/parser": "^4.1.1"
     },
     "keywords": [
         "neo4j",

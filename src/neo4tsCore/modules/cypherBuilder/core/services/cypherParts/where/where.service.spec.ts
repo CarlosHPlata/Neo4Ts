@@ -107,12 +107,16 @@ describe('testing where service', () => {
         entities = [node1, node2];
         params.addParammeters(entities);
 
-        expect(whereService.getCypher(entities, params)).toBe('WHERE integer.node1.prop = $prop AND integer.node2.prop2 = $prop2 ');
+        expect(whereService.getCypher(entities, params)).toBe(
+            'WHERE integer.node1.prop = $prop AND integer.node2.prop2 = $prop2 '
+        );
     });
 
     test('when an entity has an id it will generate the id where and skip the properties', () => {
         node.id = 123;
 
-        expect(whereService.getCypher(entities, params)).toBe('WHERE id(test) = 123 ');
+        expect(whereService.getCypher(entities, params)).toBe(
+            'WHERE id(test) = 123 '
+        );
     });
 });

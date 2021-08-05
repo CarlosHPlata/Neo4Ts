@@ -24,6 +24,8 @@ export class WhereServiceBuilder extends CypherBuilder {
     protected entities: IGraphEntity[];
     protected params: ParamsHolder;
 
+    protected PREFIX = 'WHERE';
+
     constructor(lineBreak: string, tabChar: string) {
         super(lineBreak, tabChar);
         this.filterAndConditionFactory = FilterFactory.filterConditionFactory;
@@ -46,7 +48,8 @@ export class WhereServiceBuilder extends CypherBuilder {
         this.doesFirstPass = false;
 
         for (const entity of this.entities) {
-            if (entity.id) query += this.generateFilterStringForEntityWithId(entity);
+            if (entity.id)
+                query += this.generateFilterStringForEntityWithId(entity);
             else query += this.generateFiltersStringForEntity(entity);
         }
 
@@ -54,7 +57,11 @@ export class WhereServiceBuilder extends CypherBuilder {
     }
 
     private generateFilterStringForEntityWithId(entity: IGraphEntity): string {
-        const indexProperty: Property = new Property(entity.alias, PropertyTypes.INDEX, entity.id || '');
+        const indexProperty: Property = new Property(
+            entity.alias,
+            PropertyTypes.INDEX,
+            entity.id || ''
+        );
 
         let query: string = this.generateOperator(indexProperty);
         query += this.indexFilterCreator(indexProperty);
@@ -95,17 +102,23 @@ export class WhereServiceBuilder extends CypherBuilder {
                 );
             }
 
-            operator += this.TAB_CHAR;
+            operator += this.getStringIfNoOperator();
             this.doesFirstPass = true;
         } else {
-            operator +=
-                this.LINE_BREAK +
-                this.TAB_CHAR +
-                this.operatorFactory(property) +
-                ' ';
+            operator += this.addOperatorStringDecorator(
+                this.operatorFactory(property)
+            );
         }
 
         return operator;
+    }
+
+    protected getStringIfNoOperator(): string {
+        return this.TAB_CHAR;
+    }
+
+    protected addOperatorStringDecorator(operatorString: string): string {
+        return this.LINE_BREAK + this.TAB_CHAR + operatorString + ' ';
     }
 
     private generateFilterWithCondition(
@@ -125,7 +138,7 @@ export class WhereServiceBuilder extends CypherBuilder {
         );
     }
 
-    private generatePropertyName(
+    protected generatePropertyName(
         property: Property,
         parentEntity: IGraphEntity
     ): string {
@@ -133,7 +146,7 @@ export class WhereServiceBuilder extends CypherBuilder {
     }
 
     private appendPrefix(query: string): string {
-        if (query) return 'WHERE' + this.LINE_BREAK + query;
+        if (query) return this.PREFIX + this.LINE_BREAK + query;
         return '';
     }
 }

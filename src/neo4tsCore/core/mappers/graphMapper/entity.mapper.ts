@@ -51,9 +51,7 @@ export class EntityMapper {
 
     private isEntitieAlreadyCreated(entity: IGraphEntity): boolean {
         return this.entitiescreated.some(
-            e =>
-                (entity.id && e.id === entity.id) ||
-                e.alias === entity.alias
+            e => (entity.id && e.id === entity.id) || e.alias === entity.alias
         );
     }
 
@@ -83,7 +81,7 @@ export class EntityMapper {
                 (e[1] as GraphRelationship).source ||
                 (e[1] as GraphRelationship).from ||
                 (e[1] as GraphRelationship).target ||
-                    (e[1] as GraphRelationship).to
+                (e[1] as GraphRelationship).to
         ) as AliasedRelationship[];
 
         return [nodesGraphs, relationshipGraphs];

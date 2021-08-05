@@ -11,6 +11,9 @@ export const makeActionFunctionalService = (actionService: ActionService) =>
 
         findOne: (entitiesPatternDto: GraphAbstraction) =>
             actionService.findOne(entitiesPatternDto),
+
+        create: (entitiesPatternDto: GraphAbstraction, targetAlias: string) =>
+            actionService.create(entitiesPatternDto, targetAlias),
     });
 
 const actionFunctionalService = makeActionFunctionalService(
@@ -34,3 +37,12 @@ export const findAll = actionFunctionalService.findAll;
  * @return {DBAction}
  */
 export const findOne = actionFunctionalService.findOne;
+
+/**
+ * Make a create action that can be executed or used to generate a cypher string
+ * The action will create an entitie in the DB using the alias of one as the target from the entities defined on the graph abstraction
+ * @param {GraphAbstraction} entitiesPatternDto - a dto which abstracts nodes and relationships
+ * @param {string} targetAlias - reference to an alias used on the entitiesPatternDto, this will be the entitie that will be created, if the entitie is a node and has relationships, the relationships will be generated too.
+ * @return {DBAction}
+ */
+export const create = actionFunctionalService.create;

@@ -7,4 +7,9 @@ export interface IQueryPort {
         page: number | undefined,
         size: number | undefined
     ): DBAction;
+
+    generateCreateAction(
+        entities: IGraphEntity[],
+        target: IGraphEntity
+    ): DBAction;
 }

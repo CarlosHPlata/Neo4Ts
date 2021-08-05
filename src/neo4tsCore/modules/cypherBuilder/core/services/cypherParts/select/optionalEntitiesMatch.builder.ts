@@ -7,17 +7,14 @@ import { EntitiesMatchBuiler } from './entitiesMatch.builder';
 export class OptionalEntitiesMatchBuilder extends EntitiesMatchBuiler {
     protected PREFIX_EMPTY = 'OPTIONAL MATCH ';
     protected PREFIX_NON_EMPTY = 'OPTIONAL MATCH ';
-    protected MATCH_BREAK = '';
+    protected PATTERN_BREAK = '';
+    protected QUERY_PREFIX = '';
 
     protected whereService: WhereServiceBuilder;
 
     constructor(lineBreak: string, tabChar: string) {
         super(lineBreak, tabChar);
         this.whereService = new WhereServiceBuilder(lineBreak, tabChar);
-    }
-
-    protected attachMatch(query: string): string {
-        return query;
     }
 
     protected getEmptyPrefix() {

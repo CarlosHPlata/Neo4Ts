@@ -33,17 +33,17 @@
         "tabWidth": 4,
         "bracketSpacing": true
     },
-    "name": "carlos-neo4ts",
+    "name": "neo4ts",
     "author": "kingskull619",
     "module": "dist/neo4ts.esm.js",
     "size-limit": [
         {
             "path": "dist/neo4ts.cjs.production.min.js",
-            "limit": "10 KB"
+            "limit": "1024 KB"
         },
         {
             "path": "dist/neo4ts.esm.js",
-            "limit": "10 KB"
+            "limit": "1024 KB"
         }
     ],
     "devDependencies": {

@@ -513,7 +513,7 @@ import { Neo4TS } from 'neo4ts';
 
 //Find all people that have a dog
 const action: DBAction = Neo4TS.findAll({
-  person: { label: 'person' }
+  person: { label: 'person' },
   dog: { label: 'dog' },
   has: { from: 'person', label: 'HAS', to: 'dog' }
 });
@@ -527,7 +527,7 @@ import { Neo4TS } from 'neo4ts';
 
 //Find people that have a dog in page 2 with page size of 10
 const action: DBAction = Neo4TS.findAll({
-  person: { label: 'person' }
+  person: { label: 'person' },
   dog: { label: 'dog' },
   has: { from: 'person', label: 'HAS', to: 'dog' }
 }, 2, 10);

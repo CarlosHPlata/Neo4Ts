@@ -14,6 +14,12 @@ export const makeActionFunctionalService = (actionService: ActionService) =>
 
         create: (entitiesPatternDto: GraphAbstraction, targetAlias: string) =>
             actionService.create(entitiesPatternDto, targetAlias),
+
+        update: (entitiesPatternDto: GraphAbstraction, targetAlias: string) =>
+            actionService.update(entitiesPatternDto, targetAlias),
+
+        runCypher: (cypher: string, parameters: any = {}) =>
+            actionService.runCypher(cypher, parameters),
     });
 
 const actionFunctionalService = makeActionFunctionalService(
@@ -46,3 +52,19 @@ export const findOne = actionFunctionalService.findOne;
  * @return {DBAction}
  */
 export const create = actionFunctionalService.create;
+
+/**
+ * Make an update action that can be executed or used to generate a cypher string
+ * The action will create an entitie in the DB using the alias of one as the target from the entities defined on thhe graph abstraction
+ * @param {GraphAbstraction} entitiesPatternDto - a dto wich abstracts nodes and relationships
+ * @param {string} targetAlias - reference to an alias used on the entitiesPatternDto, this will be the entitie that will be updated, all properties will be used to set properties if you want to set filters you have to defined using isFilter as true
+ * @return {DBAction}
+ */
+export const update = actionFunctionalService.update;
+
+/**
+ * Run a raw cypher with parameters
+ * @param {string} cypher - the cypher to be executed
+ * @param {string} [parameter] - parameters to be used on the cypher execution
+ */
+export const runCypher = actionFunctionalService.runCypher;

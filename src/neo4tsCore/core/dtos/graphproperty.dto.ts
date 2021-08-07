@@ -2,7 +2,6 @@ export type GraphProperty =
     | string
     | number
     | boolean
-    | string
     | Date
     | string[]
     | number[]

@@ -34,11 +34,17 @@ export enum Operator {
     NOT,
 }
 
+export enum FilterValid {
+    TRUE = 'true',
+    FALSE = 'false',
+    UNSET = 'unset',
+}
+
 export class Property {
     condition: Condition = Condition.EQUAL;
     operator: Operator = Operator.AND;
     isReturnable: boolean = true;
-    isFilter: boolean = true;
+    isFilter: FilterValid = FilterValid.UNSET;
     filterGroups: string[] = [DEFAULT_FILTER_GROUP];
 
     constructor(

@@ -1,5 +1,5 @@
 import { Condition, Property } from '../../../../../../core/entities';
-import { WhereServiceBuilder } from './where.service';
+import { PropertyAssignerBuilder } from './property.assigner.builder';
 
 export const innerConditionFactory = (
     property: Property,
@@ -14,7 +14,7 @@ export const innerConditionFactory = (
     return `${propertyName}: ${paramValue}`;
 };
 
-export class InnerPropertySetter extends WhereServiceBuilder {
+export class InnerPropertySetter extends PropertyAssignerBuilder {
     protected filterAndConditionFactory = innerConditionFactory;
     protected operatorFactory = () => ',';
     protected PREFIX = '';

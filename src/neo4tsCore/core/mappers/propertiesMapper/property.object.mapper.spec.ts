@@ -1,4 +1,5 @@
 import {
+    FilterValid,
     Property,
     PropertyTypes,
 } from '../../entities/neoEntities/property.entity';
@@ -103,7 +104,7 @@ describe('testing property object mapper', () => {
                 property
             );
 
-            expect(result.isFilter).toBeTruthy();
+            expect(result.isFilter).toBe(FilterValid.TRUE);
         });
 
         test('when passing is filter false it respect the value', () => {
@@ -113,16 +114,16 @@ describe('testing property object mapper', () => {
                 property
             );
 
-            expect(result.isFilter).not.toBeTruthy();
+            expect(result.isFilter).toBe(FilterValid.FALSE);
         });
 
-        test('when not passing is filter it returns with true', () => {
+        test('when not passing is filter it returns with unset', () => {
             const result: Property = propertyObjMapper.getPropertyIfObject(
                 alias,
                 property
             );
 
-            expect(result.isFilter).toBeTruthy();
+            expect(result.isFilter).toBe(FilterValid.UNSET);
         });
     });
 });

@@ -23,7 +23,7 @@ export abstract class DBAction {
     ) => string = () => '';
 
     private paramsHolder: ParamsHolder;
-    private isFunctionOverrided: boolean = false;
+    protected isFunctionOverrided: boolean = false;
 
     protected entities: IGraphEntity[] = [];
     protected executerAdapter: IDBExecuter;

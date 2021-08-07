@@ -1,6 +1,7 @@
 import { GraphPropertyDefinition } from '../../dtos/graphproperty.dto';
 import {
     Condition,
+    FilterValid,
     Operator,
     Property,
     PropertyTypes,
@@ -81,7 +82,7 @@ export class PropertyObjectMapper {
         }
 
         if (dto.isFilter != null && typeof dto.isFilter == 'boolean') {
-            prop.isFilter = dto.isFilter;
+            prop.isFilter = dto.isFilter ? FilterValid.TRUE : FilterValid.FALSE;
         }
 
         if (dto.group) {

@@ -1,1 +1,8 @@
-export { findAll, findOne, create } from './Functions';
+export {
+    findAll,
+    findOne,
+    create,
+    update,
+    runCypher,
+    deleteAction as delete,
+} from './Functions';

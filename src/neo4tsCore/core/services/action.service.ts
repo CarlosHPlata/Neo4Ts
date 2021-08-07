@@ -1,6 +1,7 @@
 import { CypherActions } from '../../modules/cypherBuilder/infrastructure/presenters/cypher.actions';
 import { GraphAbstraction } from '../dtos/graph.abstraction.dto';
 import { DBAction } from '../entities/db.action';
+import { CypherAction } from '../entities/db.cypher.action';
 import { IGraphEntity } from '../entities/neoEntities/graph.entity';
 import { IQueryPort } from '../interfaces/query.port';
 import { EntityMapper } from '../mappers/graphMapper';
@@ -36,13 +37,10 @@ export class ActionService {
         const entities: IGraphEntity[] = this.entityMapper.getEntitiesFromDtoArray(
             dto
         );
-
-        const targetEntity = entities.find(e => e.alias === target);
-        if (targetEntity == null) {
-            throw new Error(
-                'The alias used to target the create entity does not exists'
-            );
-        }
+        const targetEntity: IGraphEntity = this.getTargetEntitieFromString(
+            entities,
+            target
+        );
 
         const action: DBAction = this.actionPort.generateCreateAction(
             entities,
@@ -50,5 +48,57 @@ export class ActionService {
         );
 
         return action;
+    }
+
+    update(dto: GraphAbstraction, target: string): DBAction {
+        const entities: IGraphEntity[] = this.entityMapper.getEntitiesFromDtoArray(
+            dto
+        );
+        const targetEntity: IGraphEntity = this.getTargetEntitieFromString(
+            entities,
+            target
+        );
+
+        const action: DBAction = this.actionPort.generateUpdateAction(
+            entities,
+            targetEntity
+        );
+
+        return action;
+    }
+
+    delete(dto: GraphAbstraction, target: string): DBAction {
+        const entities: IGraphEntity[] = this.entityMapper.getEntitiesFromDtoArray(
+            dto
+        );
+        const targetEntity: IGraphEntity = this.getTargetEntitieFromString(
+            entities,
+            target
+        );
+
+        const action: DBAction = this.actionPort.generateDeleteAction(
+            entities,
+            targetEntity
+        );
+
+        return action;
+    }
+
+    runCypher(cypher: string, parameters: any): CypherAction {
+        return new CypherAction(cypher, parameters);
+    }
+
+    private getTargetEntitieFromString(
+        entities: IGraphEntity[],
+        target: string
+    ): IGraphEntity {
+        const targetEntity = entities.find(e => e.alias === target);
+        if (targetEntity == null) {
+            throw new Error(
+                'The alias used to target the create entity does not exists'
+            );
+        }
+
+        return targetEntity;
     }
 }

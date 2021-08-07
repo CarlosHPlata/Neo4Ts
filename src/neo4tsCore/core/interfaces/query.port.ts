@@ -12,4 +12,14 @@ export interface IQueryPort {
         entities: IGraphEntity[],
         target: IGraphEntity
     ): DBAction;
+
+    generateUpdateAction(
+        entities: IGraphEntity[],
+        target: IGraphEntity
+    ): DBAction;
+
+    generateDeleteAction(
+        entities: IGraphEntity[],
+        target: IGraphEntity
+    ): DBAction;
 }

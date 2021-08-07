@@ -1,6 +1,6 @@
 import { IGraphEntity } from '../../../../../../core/entities';
 import { ParamsHolder } from '../../../../../../core/entities/paramsHolder';
-import { InnerPropertySetter } from '../where/inner.property.setter';
+import { InnerPropertySetter } from '../propertyAssigner/inner.property.setter';
 
 export type InnerGenerator = (entity: IGraphEntity) => string;
 
@@ -12,5 +12,6 @@ export const generateInnerFunction = (
     const service = new InnerPropertySetter(lineBreak, tabChar);
     const query = service.getCypher([entity], params);
 
-    return query.slice(0, -1);
+    if (query) return query.slice(0, -1);
+    return '';
 };

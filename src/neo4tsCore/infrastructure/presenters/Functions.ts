@@ -18,6 +18,9 @@ export const makeActionFunctionalService = (actionService: ActionService) =>
         update: (entitiesPatternDto: GraphAbstraction, targetAlias: string) =>
             actionService.update(entitiesPatternDto, targetAlias),
 
+        delete: (entitiesPatternDto: GraphAbstraction, targetAlias: string) =>
+            actionService.delete(entitiesPatternDto, targetAlias),
+
         runCypher: (cypher: string, parameters: any = {}) =>
             actionService.runCypher(cypher, parameters),
     });
@@ -55,12 +58,21 @@ export const create = actionFunctionalService.create;
 
 /**
  * Make an update action that can be executed or used to generate a cypher string
- * The action will create an entitie in the DB using the alias of one as the target from the entities defined on thhe graph abstraction
+ * The action will create an entitie in the DB using the alias of one as the target from the entities defined on the graph abstraction
  * @param {GraphAbstraction} entitiesPatternDto - a dto wich abstracts nodes and relationships
  * @param {string} targetAlias - reference to an alias used on the entitiesPatternDto, this will be the entitie that will be updated, all properties will be used to set properties if you want to set filters you have to defined using isFilter as true
  * @return {DBAction}
  */
 export const update = actionFunctionalService.update;
+
+/**
+ * Make a Delete action that can be executed or used to generate a cypher string
+ * The action will delete the selected entitie in the DB using the alias of one as the target from the entities defined on the graph abstraction
+ * @param {GraphAbstraction} entitiesPatternDto - a dto wich abstracts nodes and relationships
+ * @param {string} targetAlias - reference to an alias used on the entitiesPatternDto, this will be the entitie that will be deleted
+ * @return {DBAction}
+ */
+export const deleteAction = actionFunctionalService.delete;
 
 /**
  * Run a raw cypher with parameters

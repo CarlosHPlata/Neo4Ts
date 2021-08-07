@@ -67,6 +67,23 @@ export class ActionService {
         return action;
     }
 
+    delete(dto: GraphAbstraction, target: string): DBAction {
+        const entities: IGraphEntity[] = this.entityMapper.getEntitiesFromDtoArray(
+            dto
+        );
+        const targetEntity: IGraphEntity = this.getTargetEntitieFromString(
+            entities,
+            target
+        );
+
+        const action: DBAction = this.actionPort.generateDeleteAction(
+            entities,
+            targetEntity
+        );
+
+        return action;
+    }
+
     runCypher(cypher: string, parameters: any): CypherAction {
         return new CypherAction(cypher, parameters);
     }

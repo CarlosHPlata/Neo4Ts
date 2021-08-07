@@ -20,6 +20,49 @@ npm install neo4ts
 import { Neo4TS } from 'neo4ts'
 ```
 
+## Table of Content
+- [Neo4 TS](#neo4-ts)
+  * [Installation](#installation)
+  * [Importing](#importing)
+  * [Overview](#overview)
+    + [Connecting](#connecting)
+    + [Making queries](#making-queries)
+  * [GraphAbstraction object](#graphabstraction-object)
+    + [GraphEntity](#graphentity)
+      - [Labels](#labels)
+      - [Id](#id)
+      - [isReturnable](#isreturnable)
+      - [isOptional](#isoptional)
+      - [Properties](#properties)
+        * [Primitive values](#primitive-values)
+        * [Object values](#object-values)
+        * [GraphPropertyDefinition](#graphpropertydefinition)
+          + [Value and Type](#value-and-type)
+          + [Filtering capabilities](#filtering-capabilities)
+          + [isFilter](#isfilter)
+          + [Condition](#condition)
+          + [Operator](#operator)
+    + [GraphRelationship](#graphrelationship)
+      - [Source](#source)
+      - [Target](#target)
+  * [Database Actions](#database-actions)
+  * [Action Builders](#action-builders)
+    + [Find All](#find-all)
+      - [Pagination](#pagination)
+    + [Find one](#find-one)
+    + [Create](#create)
+    + [Update](#update)
+      - [Filtering before update](#filtering-before-update)
+    + [Delete](#delete)
+    + [Raw Cypher](#raw-cypher)
+  * [The Execute Function](#the-execute-function)
+  * [The Get Query Function](#the-get-query-function)
+  * [The Get Params For DB Use Function](#the-get-params-for-db-use-function)
+  * [The Get Pretty Query Function](#the-get-pretty-query-function)
+  * [Override Return function](#override-return-function)
+  * [Return object](#return-object)
+    + [Return Object when default behaviour modified](#return-object-when-default-behaviour-modified)
+
 ## Overview
 
 ### Connecting
@@ -54,9 +97,9 @@ ConfigurationManagers.closeDriver();
 
 ### Making queries
 
-You can build a Cypher Query Action by importing ```neo4ts``` and use one of the cypher query building.
+You can build a Cypher database Action by importing ```neo4ts``` and use one of the cypher cypher building action to perform and execute cypher queries to the database.
 
-A Cypher Query Action is a virtual container for a [GraphAbstraction](#graphabstraction-object) that later can be translated into a valid cypher query with special capabilities or executed to a database
+A [Cypher Database Action](#database-actions) is a virtual container for a [GraphAbstraction](#graphabstraction-object) which later can be translated into a valid cypher query with special capabilities or executed to a database.
 
 ```js
 import { Neo4TS } from 'neo4ts';
@@ -292,6 +335,21 @@ const entity: GraphEntity = {
 ###### Filtering capabilities
 In some cases you want to use the ```GraphPropertyDefinition``` to filter your data. Neo4TS provide some capabilities to filter them.
 
+###### isFilter
+Some times Neo4TS will need you to define if the property definition will be used as a filter. By default most actions will use the properties as they need if they have to filter or to set data, but in some actions like [Update Action](#update) may require you to use ```isFilter``` to differenciate the behaviour.
+
+```ts
+const entity: GraphEntity = {
+  properties: {
+    timeOfDelivery: {
+      type: 'time',
+      value: new Date(),
+      isFilter: true
+    }
+  }
+};
+```
+
 
 ###### Condition
 As default Neo4TS will use the equal condition to compare when using properties as filters. If you want to change this behaviour you can use the Condition property to alter it.
@@ -432,3 +490,336 @@ const abstraction: GraphAbstraction = {
 };
 ```
 In the previous example both ```relationshipEX1``` and ```relationshipEX2``` have the same effect.
+
+## Database Actions
+A Cypher Database Action is a virtual container for a [GraphAbstraction](#graphabstraction-object) which later can be translated into a valid cypher query with special capabilities or executed to a database.
+
+Neo4TS provides severall action builders to perform to the Neo4J Database.
+All core of the Neo4TS library is to provide this action builders.
+
+You can use the action builders by importing:
+
+```ts
+import { Neo4TS } from 'neo4ts';
+```
+There you will find the multiple action builders provided by Neo4TS.
+
+## Action Builders
+### Find All
+The find all action, when executed will retrieve all entities in the database, that match the [GraphAbstraction](#graphabstraction-object) defined.
+
+```ts
+import { Neo4TS } from 'neo4ts';
+
+//Find all people that have a dog
+const action: DBAction = Neo4TS.findAll({
+  person: { label: 'person' }
+  dog: { label: 'dog' },
+  has: { from: 'person', label: 'HAS', to: 'dog' }
+});
+```
+#### Pagination
+
+Find all has pagination capabilities, it can accept a ```page``` and ```size``` as second and third parameters.
+
+```ts
+import { Neo4TS } from 'neo4ts';
+
+//Find people that have a dog in page 2 with page size of 10
+const action: DBAction = Neo4TS.findAll({
+  person: { label: 'person' }
+  dog: { label: 'dog' },
+  has: { from: 'person', label: 'HAS', to: 'dog' }
+}, 2, 10);
+```
+
+### Find one
+Find one acts as [Find All](#find-all), but it will only return one [row result](#return-object).
+
+
+```ts
+import { Neo4TS } from 'neo4ts';
+
+//Find the first person with name equal to 'Carlos'
+const action: DBAction = Neo4TS.findOne({
+  person: { 
+    label: 'person',
+    properties: {
+      name: 'Carlos'
+    }
+  }
+});
+```
+### Create
+Create is used to create a signle entity into the database, it receives a [GraphAbstraction](#graphabstraction-object) and a ```string``` property which will declare the target [GraphEntity](#graphentity).
+
+**Is worth to mention that all Relationships tied to the target will be created aswelll if the entity is a Node**
+
+```ts
+import { Neo4TS } from 'neo4ts';
+
+//Create a dog named 'Hunter' and set his owner as Carlos
+const action: DBAction = Neo4TS.create({
+
+  dog: {
+    label: 'dog',
+    properties: { name: 'Huner' }
+  },
+  person: { 
+    label: 'person',
+    properties: { name: 'Carlos' }
+  },
+  has: { from: 'person', to: 'dog', label: 'HAS' }
+
+}, 'dog'); //<== don't forget to set the target to create
+```
+
+### Update
+Update is an action used to set data to a single entity into the database, it receives a [GraphAbstraction](#graphabstraction-object) and a ```string``` property which will declare the target [GraphEntity](#graphentity).
+
+```ts
+import { Neo4TS } from 'neo4ts';
+
+//Update the name of the dog with id 1 to 'Muzzarella'
+const action: DBAction = Neo4TS.create({
+
+  dog: {
+    label: 'dog',
+    id: 1,
+    properties: { name: 'Muzzarella' }
+  },
+
+}, 'dog'); //<== don't forget to set the target to update
+```
+
+#### Filtering before update
+Some times we doesn't have the ID to filter our entities, so we would like to filter first before updating values.
+For it, when setting properties, use the property [isFilter](#isfilter) to know that this property will not be used to set values but to filter data.
+
+```ts
+import { Neo4TS } from 'neo4ts';
+
+//Update the name of the dog wich age is 3 to 'Muzzarella'
+const action: DBAction = Neo4TS.create({
+
+  dog: {
+    label: 'dog',
+    properties: { 
+      age: {
+        type: 'number',
+        value: 3,
+        isFilter: true
+      },
+      name: 'Muzzarella'
+    }
+  },
+
+}, 'dog'); //<== don't forget to set the target to update
+```
+
+### Delete
+Delete is an action used to delete an entity on the database, it receives a [GraphAbstraction](#graphabstraction-object) and a ```string``` property which will declare the target [GraphEntity](#graphentity).
+
+```ts
+import { Neo4TS } from 'neo4ts';
+
+//Deleting a dog with id 1
+const action: DBAction = Neo4TS.delete({
+
+  dog: {
+    label: 'dog',
+    id: 1,
+  },
+
+}, 'dog'); //<== don't forget to set the target to update
+```
+
+### Raw Cypher
+Run cypher will execute a raw cypher provided by you. It can accept parameters as a second argument.
+
+```ts
+import { Neo4TS } from 'neo4ts';
+const action: DBAction = Neo4TS.runCypher(
+  'MATCH (dog:Dog {param1: $param1})',
+  { param1: 12 }
+);
+```
+
+
+## The Execute Function
+Execute is a method from a DBAction that will trigger it's execution into the database. It returns a promise and when resolved it will returnthe right response [see more](#return-object).
+
+```ts
+Neo4TS.findAll({})
+.execute().then(res => {
+  console.log(res);
+});
+```
+
+## The Get Query Function
+Neo4TS has the feature to provide you with the query generated by your [GraphAbstraction](#graphabstraction-object) and your [DB Action](#database-actions).
+The method will return a string, containing the cypher query.
+
+```ts
+import { Neo4TS } from 'neo4ts';
+
+const query: string = Neo4TS.findAll({
+  person: { label: 'person' }
+  dog: { label: 'dog' },
+  has: { from: 'person', label: 'HAS', to: 'dog' }
+}).getQuery();
+
+console.log(query);
+```
+query will be:
+```txt
+MATCH (person:person)-[has:HAS]->(dog:dog) return person, has, dog
+```
+
+## The Get Params For DB Use Function
+you will notice that by using [getQuery( )](#the-get-query-function) or [getPrettyQuery( )](#the-get-pretty-query-function) when using filters or assign properties Neo4TS use parameters.
+The method ```getParamsForDatabaseUse``` will return the params object that you can use to run the query.
+
+```ts
+const params = Neo4TS.findAll({...}).getParamsForDatabaseUse();
+```
+
+## The Get Pretty Query Function
+Get pretty query will do almost the same as [getQuery](#the-get-query-function) but it will try to add break lines and tabs in order to be more readable for users.
+
+```ts
+import { Neo4TS } from 'neo4ts';
+
+const query: string = Neo4TS.findAll({
+  person: { label: 'person' },
+  dog: { label: 'dog' }
+}).getQuery();
+
+console.log(query);
+```
+Query will be:
+```txt
+MATCH 
+  (person:person),
+  (dog:dog)
+RETURN person, dog
+```
+
+## Override Return function
+By default Neo4TS will build the return using and returning the entities, if you want to override this behaviour you can use ```overrideReturnAction```, this function accepts a callback that returns a string, this will be used to override what comes after the ```RETURN``` keyword.
+
+```overrideReturnAction``` Will return the same DB Action so you can chain functions.
+
+```ts
+import { Neo4TS } from 'neo4ts';
+
+//only want the person name
+const res = await Neo4TS.findAll({
+  person: { label: 'person' }
+})
+.overrideReturnAction(() => 'person.name as name');
+.execute();
+```
+
+```overrideReturnAction``` callback also can receive the list of entities used to build the query.
+
+```ts
+import { Neo4TS } from 'neo4ts';
+
+//only want the person name
+const res = await Neo4TS.findAll({
+  person: { label: 'person' }
+})
+.overrideReturnAction((entities) => `${entities[0].alias}.name as name`);
+.execute();
+```
+
+**```overrideReturnAction``` Will also change the default behaviour of the [return object](#return-object-when-default-behaviour-modified)**
+
+## Return object
+Neo4TS will return for almost all DBActions the same format as defined in your [GraphAbstraction](#graphabstraction-object) but in an arraw, where every entry is a row result.
+
+```ts
+import { Neo4TS } from 'neo4ts';
+
+//Find all people that have a dog
+Neo4TS.findAll({
+  person: { label: 'person' }
+  dog: { label: 'dog' },
+  has: { from: 'person', label: 'HAS', to: 'dog' }
+}).execute().then(res => {
+  console.log(res);
+});
+```
+it will return an object like:
+```ts
+[
+  { //the first row
+    person: { label: 'person', properties: {...} }
+    dog: { label: 'dog', properties: {...} },
+    has: { from: 'person', label: 'HAS', to: 'dog', properties: {...} }
+  },
+  { //the second row
+    person: { label: 'person', properties: {...} }
+    dog: { label: 'dog', properties: {...} },
+    has: { from: 'person', label: 'HAS', to: 'dog', properties: {...} }
+  }
+  ...
+]
+
+```
+### Return Object when default behaviour modified
+**If you modify the return phase it will [return](#override-return-function) a JSON like answer**
+
+```ts
+import { Neo4TS } from 'neo4ts';
+
+//only want the person name
+const res = await Neo4TS.findAll({
+  person: { label: 'person' }
+})
+.overrideReturnAction(() => 'person.name as name'); //<--
+.execute();
+```
+
+it will return an object like:
+
+```ts
+[
+  { //the first row
+    name: 'name1'
+  },
+  { //the second row
+    name: 'name2'
+  }
+  ...
+]
+
+```
+
+even if you return an entire entitie it will return a json containing only properties
+
+```ts
+import { Neo4TS } from 'neo4ts';
+
+const res = await Neo4TS.findAll({
+  person: { label: 'person' }
+})
+.overrideReturnAction(() => 'person'); //<--
+.execute();
+```
+
+it will return an object like:
+
+```ts
+[
+  { //the first row
+    person: { name: 'name1' }
+  },
+  { //the second row
+    person: { name: 'name1' }
+  }
+  ...
+]
+
+```

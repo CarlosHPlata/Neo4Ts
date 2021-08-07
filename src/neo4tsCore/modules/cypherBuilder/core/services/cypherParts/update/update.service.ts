@@ -42,12 +42,12 @@ export class UpdateService extends CypherBuilder {
         return query;
     }
 
-    extractTargetProps(target: IGraphEntity): void {
+    private extractTargetProps(target: IGraphEntity): void {
         this.allTargetProps = target.properties ? [...target.properties] : [];
         target.properties = [];
     }
 
-    getMatchEntities(target: IGraphEntity): IGraphEntity[] {
+    private getMatchEntities(target: IGraphEntity): IGraphEntity[] {
         const matchEntities: IGraphEntity[] = this.entities.filter(
             e => e !== target
         );
@@ -59,7 +59,7 @@ export class UpdateService extends CypherBuilder {
         return matchEntities;
     }
 
-    prepareTargetForUpdate(target: IGraphEntity): IGraphEntity {
+    private prepareTargetForUpdate(target: IGraphEntity): IGraphEntity {
         target.properties = this.allTargetProps.filter(
             p => p.isFilter !== FilterValid.TRUE
         );

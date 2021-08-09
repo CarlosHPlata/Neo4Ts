@@ -57,6 +57,8 @@ export class MultipleCreateService extends CypherBuilder {
                 entities.push(...side);
             });
 
+        entities = entities.filter((e, pos) => entities.indexOf(e) == pos);
+
         if (entities.length === 0) {
             throw new Error(
                 'when using multiple create at least one entity should be targeteable'

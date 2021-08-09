@@ -107,4 +107,17 @@ describe('testing create multiple service', () => {
             );
         }
     });
+
+    test('when sending two nodes target and a relation, relationship should appear just once', () => {
+        const node = new Node('test', ['test']);
+        node.isTargeteable = true;
+        const node2 = new Node('create', ['test']);
+        node2.isTargeteable = true;
+        const rel = new Relationship('rel', ['REL'], node, node2);
+        setEntities([node, node2, rel]);
+
+        createService.getCypher(entities, params);
+        expect(createRes).toBe('test create rel');
+        expect(matchRes).toBe('');
+    });
 });

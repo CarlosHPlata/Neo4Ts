@@ -60,6 +60,10 @@ export class RelationshipMapper {
             graphRepationship.isReturnable != null
                 ? graphRepationship.isReturnable
                 : true;
+        relationship.isTargeteable = 
+            graphRepationship.isTargeteable != null
+                ? graphRepationship.isTargeteable
+                : false;
 
         return relationship;
     }

@@ -68,9 +68,29 @@ describe('testing the node mapper', () => {
         expect(result.isOptional).not.toBeTruthy();
     });
 
-    test('when sending is optional undefined it returns a vlaid node', () => {
+    test('when sending is optional undefined it returns a valid node', () => {
         const result: Node = nodeMapper.getInputNode([alias, graphNode]);
 
         expect(result.isOptional).not.toBeTruthy();
+    });
+
+    test('when sending is targeteable undefined it returns a valid node with value in false', () => {
+        const result: Node = nodeMapper.getInputNode([alias, graphNode]);
+
+        expect(result.isTargeteable).not.toBeTruthy();
+    });
+
+    test('when sending is targeteable as true it returns a valid node with the correct value', () => {
+        graphNode.isTargeteable = true;
+        const result: Node = nodeMapper.getInputNode([alias, graphNode]);
+
+        expect(result.isTargeteable).toBeTruthy();
+    });
+
+    test('when sending is targeteable as false it returns a valid node with the correct falsy value', () => {
+        graphNode.isTargeteable = false;
+        const result: Node = nodeMapper.getInputNode([alias, graphNode]);
+
+        expect(result.isTargeteable).not.toBeTruthy();
     });
 });

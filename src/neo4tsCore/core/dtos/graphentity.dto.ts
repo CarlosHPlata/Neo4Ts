@@ -8,4 +8,5 @@ export type GraphEntity = {
     isReturnable?: boolean;
     isOptional?: boolean;
     isGroup?: boolean;
+    isTargeteable?: boolean;
 };

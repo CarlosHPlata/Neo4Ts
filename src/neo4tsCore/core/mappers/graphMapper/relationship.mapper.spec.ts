@@ -96,6 +96,25 @@ describe('testing relationship mapper', () => {
         expect(result.isReturnable).not.toBeTruthy();
     });
 
+    test('when sending a is targeteable undefined it sets it to false', () => {
+        const result: Relationship = relationshipMapper.getInputRelationShipWithEntities(
+            [alias, relationship],
+            entitiesCreated
+        );
+
+        expect(result.isTargeteable).not.toBeTruthy();
+    });
+
+    test('when sending is targeteable it returns a valid relationship', () => {
+        relationship.isTargeteable = true;
+        const result: Relationship = relationshipMapper.getInputRelationShipWithEntities(
+            [alias, relationship],
+            entitiesCreated
+        );
+
+        expect(result.isTargeteable).toBeTruthy();
+    });
+
     test('when sending isReturnable undefined it returns a valid relationship', () => {
         const result: Relationship = relationshipMapper.getInputRelationShipWithEntities(
             [alias, relationship],

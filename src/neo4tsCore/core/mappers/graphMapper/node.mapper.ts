@@ -28,6 +28,8 @@ export class NodeMapper {
             graphNode.isReturnable != null ? graphNode.isReturnable : true;
         node.isOptional =
             graphNode.isOptional != null ? graphNode.isOptional : false;
+        node.isTargeteable =
+            graphNode.isTargeteable != null ? graphNode.isTargeteable : false;
 
         return node;
     }

@@ -50,6 +50,17 @@ export class ActionService {
         return action;
     }
 
+    createMultiple(dto: GraphAbstraction): DBAction {
+        const entities: IGraphEntity[] = this.entityMapper.getEntitiesFromDtoArray(
+            dto
+        );
+
+        const action: DBAction = this.actionPort.generateMultipleCreateAction(
+            entities
+        );
+        return action;
+    }
+
     update(dto: GraphAbstraction, target: string): DBAction {
         const entities: IGraphEntity[] = this.entityMapper.getEntitiesFromDtoArray(
             dto
@@ -67,6 +78,17 @@ export class ActionService {
         return action;
     }
 
+    updateMultiple(dto: GraphAbstraction): DBAction {
+        const entities: IGraphEntity[] = this.entityMapper.getEntitiesFromDtoArray(
+            dto
+        );
+
+        const action: DBAction = this.actionPort.generateMultipleUpdate(
+            entities
+        );
+        return action;
+    }
+
     delete(dto: GraphAbstraction, target: string): DBAction {
         const entities: IGraphEntity[] = this.entityMapper.getEntitiesFromDtoArray(
             dto
@@ -81,6 +103,17 @@ export class ActionService {
             targetEntity
         );
 
+        return action;
+    }
+
+    deleteMultiple(dto: GraphAbstraction): DBAction {
+        const entities: IGraphEntity[] = this.entityMapper.getEntitiesFromDtoArray(
+            dto
+        );
+
+        const action: DBAction = this.actionPort.generateDeleteMultipe(
+            entities
+        );
         return action;
     }
 

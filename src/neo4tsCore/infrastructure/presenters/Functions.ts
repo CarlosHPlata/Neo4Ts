@@ -15,11 +15,20 @@ export const makeActionFunctionalService = (actionService: ActionService) =>
         create: (entitiesPatternDto: GraphAbstraction, targetAlias: string) =>
             actionService.create(entitiesPatternDto, targetAlias),
 
+        createMultiple: (entitiesPatternDto: GraphAbstraction) =>
+            actionService.createMultiple(entitiesPatternDto),
+
         update: (entitiesPatternDto: GraphAbstraction, targetAlias: string) =>
             actionService.update(entitiesPatternDto, targetAlias),
 
+        updateMultiple: (entitiesPatternDto: GraphAbstraction) =>
+            actionService.updateMultiple(entitiesPatternDto),
+
         delete: (entitiesPatternDto: GraphAbstraction, targetAlias: string) =>
             actionService.delete(entitiesPatternDto, targetAlias),
+
+        deleteMultiple: (entitiesPatternDto: GraphAbstraction) =>
+            actionService.deleteMultiple(entitiesPatternDto),
 
         runCypher: (cypher: string, parameters: any = {}) =>
             actionService.runCypher(cypher, parameters),
@@ -51,14 +60,22 @@ export const findOne = actionFunctionalService.findOne;
  * Make a create action that can be executed or used to generate a cypher string
  * The action will create an entitie in the DB using the alias of one as the target from the entities defined on the graph abstraction
  * @param {GraphAbstraction} entitiesPatternDto - a dto which abstracts nodes and relationships
- * @param {string} targetAlias - reference to an alias used on the entitiesPatternDto, this will be the entitie that will be created, if the entitie is a node and has relationships, the relationships will be generated too.
+ * @param {string} targetAlias - reference to an alias used on the entitiesPatternDto, this will be the entitie that will be created, if the entity is a node and has relationships, the relationships will be generated too.
  * @return {DBAction}
  */
 export const create = actionFunctionalService.create;
 
 /**
+ * Make a create action that can be executed or used to generate a cypher string
+ * The action can create multiple entities in the DB, it will look for entities marked with isTargeteable as true for creating them. if the entity is a node and has relationships, the relationships will be generated too.
+ * @param {GraphAbstraction} entitiesPatternDto - a dto which abstracts nodes and relationships
+ * @return {DBAction}
+ */
+export const createMultiple = actionFunctionalService.createMultiple;
+
+/**
  * Make an update action that can be executed or used to generate a cypher string
- * The action will create an entitie in the DB using the alias of one as the target from the entities defined on the graph abstraction
+ * The action will update an entity in the DB using the alias of one as the target from the entities defined on the graph abstraction
  * @param {GraphAbstraction} entitiesPatternDto - a dto wich abstracts nodes and relationships
  * @param {string} targetAlias - reference to an alias used on the entitiesPatternDto, this will be the entitie that will be updated, all properties will be used to set properties if you want to set filters you have to defined using isFilter as true
  * @return {DBAction}
@@ -66,13 +83,29 @@ export const create = actionFunctionalService.create;
 export const update = actionFunctionalService.update;
 
 /**
+ * Make an update action that can be executed or used to generate a cypher string
+ * The action will update entities in the DB, it will look for entities marked with isTargeteable as true for update them.
+ * @param {GraphAbstraction} entitiesPatternDto - a dto which abstracts nodes and relationships
+ * @return {DBAction}
+ */
+export const updateMultiple = actionFunctionalService.updateMultiple;
+
+/**
  * Make a Delete action that can be executed or used to generate a cypher string
- * The action will delete the selected entitie in the DB using the alias of one as the target from the entities defined on the graph abstraction
+ * The action will delete the selected entity in the DB using the alias of one as the target from the entities defined on the graph abstraction
  * @param {GraphAbstraction} entitiesPatternDto - a dto wich abstracts nodes and relationships
  * @param {string} targetAlias - reference to an alias used on the entitiesPatternDto, this will be the entitie that will be deleted
  * @return {DBAction}
  */
 export const deleteAction = actionFunctionalService.delete;
+
+/**
+ * Make a delete aciton that can be executed or used to generate a cypher string
+ * The aciton will delete entities in the DB, it will look for entities marked with isTargeteable as true for deleting them.
+ * @param {GraphAbstraction} entitiesPatternDto - a dto which abstracts nodes and relationships
+ * @return {DBAction}
+ */
+export const deleteMultiple = actionFunctionalService.deleteMultiple;
 
 /**
  * Run a raw cypher with parameters

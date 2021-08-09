@@ -13,13 +13,19 @@ export interface IQueryPort {
         target: IGraphEntity
     ): DBAction;
 
+    generateMultipleCreateAction(entities: IGraphEntity[]): DBAction;
+
     generateUpdateAction(
         entities: IGraphEntity[],
         target: IGraphEntity
     ): DBAction;
 
+    generateMultipleUpdate(entities: IGraphEntity[]): DBAction;
+
     generateDeleteAction(
         entities: IGraphEntity[],
         target: IGraphEntity
     ): DBAction;
+
+    generateDeleteMultipe(entities: IGraphEntity[]): DBAction;
 }

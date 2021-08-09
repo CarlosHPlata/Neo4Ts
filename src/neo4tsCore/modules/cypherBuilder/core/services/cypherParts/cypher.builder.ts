@@ -30,4 +30,10 @@ export abstract class CypherBuilder {
     setTabChar(tabchar: string): void {
         this.TAB_CHAR = tabchar;
     }
+
+
+    protected prepareQueryString(query: string): string {
+        query = query !== '' ? query.slice(0, -1) : '';
+        return query;
+    }
 }

@@ -36,6 +36,11 @@ export class MultipleUpdateService extends CypherBuilder {
 
     private getUpdatePart(): string {
         const entities: IGraphEntity[] = this.getTargetEntities();
+        if (entities.length === 0) {
+            throw new Error(
+                'No entities marked as targeteable found for update multiple'
+            );
+        }
 
         return this.updateBuilder.getCypher(entities, this.params);
     }

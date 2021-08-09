@@ -33,6 +33,7 @@ import { Neo4TS } from 'neo4ts'
       - [Id](#id)
       - [isReturnable](#isreturnable)
       - [isOptional](#isoptional)
+      - [isTargeteable](#istargeteable)
       - [Properties](#properties)
         * [Primitive values](#primitive-values)
         * [Object values](#object-values)
@@ -51,9 +52,12 @@ import { Neo4TS } from 'neo4ts'
       - [Pagination](#pagination)
     + [Find one](#find-one)
     + [Create](#create)
+    + [Create Multiple](#create-multiple)
     + [Update](#update)
       - [Filtering before update](#filtering-before-update)
+    + [Update Multiple](#update-multiple)
     + [Delete](#delete)
+    + [Delete Multiple](#delete-multiple)
     + [Raw Cypher](#raw-cypher)
   * [The Execute Function](#the-execute-function)
   * [The Get Query Function](#the-get-query-function)
@@ -227,6 +231,16 @@ isOptional?: boolean
 ```
 When Neo4TS is building the match pattern to use in cypher it will look for the ```isOptional``` propertie to decide between MATCH or OPTIONAL MATCH.
 By default all entities have ```isOptional``` set to ```FALSE```.
+
+#### isTargeteable
+```ts
+isTargeteable?: boolean
+```
+This property is used to mark entities to be target when used for actions:
+* [Create Multiple](#create-multiple)
+* [Update Multiple](#update-multiple)
+* [Delete Multiple](#delete-multiple)
+
 
 #### Properties
 ```ts
@@ -553,6 +567,8 @@ const action: DBAction = Neo4TS.findOne({
 ### Create
 Create is used to create a signle entity into the database, it receives a [GraphAbstraction](#graphabstraction-object) and a ```string``` property which will declare the target [GraphEntity](#graphentity).
 
+**Create will only create one single entity, if you want to create multiple entities in one single query use [Create Multiple Action](#create-multiple)**
+
 **Is worth to mention that all Relationships tied to the target will be created aswelll if the entity is a Node**
 
 ```ts
@@ -574,8 +590,34 @@ const action: DBAction = Neo4TS.create({
 }, 'dog'); //<== don't forget to set the target to create
 ```
 
+### Create Multiple
+Create multiple is used to generate multiple entities at once into the database, it receives a [GraphAbstraction](#graphabstraction-object) with some entities marked as [isTargeteable](#istargeteable). Neo4TS will create the entities marked.
+
+Create a dog and person inside a house:
+```ts
+import { Neo4TS } from 'neo4ts';
+
+const action: DBAction = Neo4TS.createMultiple({
+  house: {id: 1},
+  dog: {
+    label: 'dog',
+    properties: { name: 'Huner' },
+    isTargeteable: true, //<== don't forget to set it as the target
+  },
+  person: { 
+    label: 'person',
+    properties: { name: 'Carlos' },
+    isTargeteable: true, //<== don't forget to set it as the target
+  },
+  has: { from: 'person', to: 'dog', label: 'HAS' },
+  livesIn: { from: 'person', to: 'house', label: 'LIVES_IN'},
+}); 
+```
+
 ### Update
 Update is an action used to set data to a single entity into the database, it receives a [GraphAbstraction](#graphabstraction-object) and a ```string``` property which will declare the target [GraphEntity](#graphentity).
+
+**Update will work for a single entity, if you want to update more than one check: [Update Multiple Action](#update-multiple)**
 
 ```ts
 import { Neo4TS } from 'neo4ts';
@@ -616,9 +658,32 @@ const action: DBAction = Neo4TS.create({
 
 }, 'dog'); //<== don't forget to set the target to update
 ```
+### Update Multiple
+Update multiple with set data to multiple entities at once into the database, it receives a [GraphAbstraction](#graphabstraction-object) and look for entities marked as [isTargeteable](#istargeteable) to know which entities will update. It will took the same rule for [filtering data](#filtering-before-update).
+
+```ts
+import { Neo4TS } from 'neo4ts';
+
+//Update the name of a dog and person
+const action: DBAction = Neo4TS.create({
+  dog: {
+    id: 1,
+    properties: { name: 'Muzzarella' },
+    isTargeteable: true, //<== don't forget to set it as the target
+  },
+  person: {
+    id: 2,
+    properties: { name: 'Victoria' },
+    isTargeteable: true, //<== don't forget to set it as the target
+  }
+});
+```
+
 
 ### Delete
 Delete is an action used to delete an entity on the database, it receives a [GraphAbstraction](#graphabstraction-object) and a ```string``` property which will declare the target [GraphEntity](#graphentity).
+
+**Delete will only delete one entity abstraction, if you want to delete multiple entities use [Delete Multiple Action](#delete-multiple)**
 
 ```ts
 import { Neo4TS } from 'neo4ts';
@@ -632,6 +697,26 @@ const action: DBAction = Neo4TS.delete({
   },
 
 }, 'dog'); //<== don't forget to set the target to update
+```
+
+### Delete Multiple
+Delete Multiple will create an action used to delete multiple entities in the database, it receives a [GraphAbstraction](#graphabstraction-object) and look for entities marked as [isTargeteable](#istargeteable) to know which entities will delete.
+
+```ts
+import { Neo4TS } from 'neo4ts';
+
+//Deleting a person and all dogs own
+const action: DBAction = Neo4TS.delete({
+  person: {
+    id: 1, 
+    isTargeteable: true, //<== don't forget to set it as the target
+  },
+  dog: {
+    label: 'dog',
+    isTargeteable: true, //<== don't forget to set it as the target
+  },
+  has: { from: 'person', to: 'dog', label: 'HAS' },
+});
 ```
 
 ### Raw Cypher

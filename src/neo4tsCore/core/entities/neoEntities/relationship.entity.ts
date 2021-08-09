@@ -5,6 +5,7 @@ import { Property } from './property.entity';
 export class Relationship implements IGraphEntity {
     isReturnable: boolean = true;
     isOptional: boolean = false;
+    isTargeteable: boolean = false;
     id?: string | number;
     properties?: Property[];
 

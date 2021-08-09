@@ -7,7 +7,7 @@ import { CypherBuilder } from '../cypher.builder';
 import { SelectBuilder } from '../select/select.service';
 import { EntitiesCreateBuilder } from './entities.create.builder';
 
-export class CreateService extends CypherBuilder {
+export class MultipleCreateService extends CypherBuilder {
     protected matchBuilder: SelectBuilder;
     protected createBuilder: EntitiesCreateBuilder;
 
@@ -17,12 +17,10 @@ export class CreateService extends CypherBuilder {
         this.createBuilder = new EntitiesCreateBuilder(lineBreak, tabChar);
     }
 
-    protected buildCypher(target: IGraphEntity): string {
-        const targets: IGraphEntity[] = this.getTargetEntities(target);
-        const matchEntities: IGraphEntity[] = this.getMatchEntities(targets);
-
+    protected buildCypher(): string {
         let usedNodes: IGraphEntity[] = [];
 
+        const matchEntities: IGraphEntity[] = this.getMatchEntities();
         const matchPart: string = this.matchBuilder.getCypher(
             matchEntities,
             this.params,
@@ -30,45 +28,51 @@ export class CreateService extends CypherBuilder {
         );
         usedNodes = this.matchBuilder.getUsedNodes();
 
-        const selectPart: string = this.createBuilder.getCypher(
-            targets,
+        const createEntities: IGraphEntity[] = this.getCreateEntities();
+        const createPart: string = this.createBuilder.getCypher(
+            createEntities,
             this.params,
             usedNodes
         );
 
-        return this.prepareQueryString(matchPart + selectPart);
+        return this.prepareQueryString(matchPart + createPart);
     }
 
-    private getTargetEntities(target: IGraphEntity): IGraphEntity[] {
-        let targets: IGraphEntity[] = [target];
+    private getMatchEntities(): IGraphEntity[] {
+        const createEntities = this.getCreateEntities();
+        return this.entities.filter(e => !createEntities.includes(e));
+    }
 
-        if (target instanceof Node) {
-            targets = targets.concat(this.getSideRelationships(target));
-        }
+    private getCreateEntities(): IGraphEntity[] {
+        let entities: IGraphEntity[] = this.entities.filter(
+            e => e.isTargeteable
+        );
 
-        if (!this.areValidTargets(targets)) {
+        entities
+            .filter(e => e instanceof Node)
+            .forEach(target => {
+                const side: IGraphEntity[] = this.getSideRelationships(
+                    target as Node
+                );
+                entities.push(...side);
+            });
+
+        if (entities.length === 0) {
             throw new Error(
-                'One of the entities you are trying to create already has an ID'
+                'when using multiple create at least one entity should be targeteable'
             );
         }
 
-        return targets;
-    }
-
-    private areValidTargets(targets: IGraphEntity[]): boolean {
-        return !targets.some(e => e.id != null);
+        return entities;
     }
 
     protected getSideRelationships(target: Node): IGraphEntity[] {
         return this.entities.filter(e => {
             return (
                 e instanceof Relationship &&
+                !e.isTargeteable &&
                 (e.source === target || e.target === target)
             );
         });
-    }
-
-    private getMatchEntities(targets: IGraphEntity[]): IGraphEntity[] {
-        return this.entities.filter(e => !targets.includes(e));
     }
 }

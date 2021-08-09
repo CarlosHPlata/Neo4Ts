@@ -22,10 +22,7 @@ export class DeleteService extends CypherBuilder {
 
         const deletePart = this.deleteBuilder.getCypher([target], this.params);
 
-        let query = matchPart + deletePart;
-        query = query !== '' ? query.slice(0, -1) : '';
-
-        return query;
+        return this.prepareQueryString(matchPart + deletePart);
     }
 
     private getMatchEntities(target: IGraphEntity): IGraphEntity[] {

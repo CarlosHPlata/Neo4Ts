@@ -7,4 +7,5 @@ export interface IGraphEntity {
     properties?: Property[];
     isOptional?: boolean;
     isReturnable?: boolean;
+    isTargeteable?: boolean;
 }

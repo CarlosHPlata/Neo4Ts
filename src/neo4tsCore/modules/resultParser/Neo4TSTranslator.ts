@@ -29,7 +29,8 @@ const mapEntities = (
 
     for (const entity of onlyReturnables) {
         const resultEnt = record.get(entity.alias);
-        abstraction[entity.alias] = mapGraphEntities(resultEnt, entity);
+        if (resultEnt)
+            abstraction[entity.alias] = mapGraphEntities(resultEnt, entity);
     }
 
     return abstraction;

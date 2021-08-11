@@ -35,7 +35,7 @@ export class GraphSchemaEntity {
     }
 
 
-    private getRelationshipNames(selectedEntities: string[]): [label: string, entry: GraphRelationship][] {
+    private getRelationshipNames(selectedEntities: string[]) {
         const names = this.getOnlyNodeNames(selectedEntities);
         const entries = Object.entries(this.getAbstractionCopy());
 

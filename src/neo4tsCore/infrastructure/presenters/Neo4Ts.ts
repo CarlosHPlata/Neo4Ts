@@ -1,4 +1,5 @@
 export {
+    createSchema,
     findAll,
     findOne,
     create,

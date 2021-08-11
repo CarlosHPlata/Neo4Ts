@@ -623,7 +623,7 @@ Update is an action used to set data to a single entity into the database, it re
 import { Neo4TS } from 'neo4ts';
 
 //Update the name of the dog with id 1 to 'Muzzarella'
-const action: DBAction = Neo4TS.create({
+const action: DBAction = Neo4TS.update({
 
   dog: {
     label: 'dog',
@@ -642,7 +642,7 @@ For it, when setting properties, use the property [isFilter](#isfilter) to know 
 import { Neo4TS } from 'neo4ts';
 
 //Update the name of the dog wich age is 3 to 'Muzzarella'
-const action: DBAction = Neo4TS.create({
+const action: DBAction = Neo4TS.update({
 
   dog: {
     label: 'dog',
@@ -665,7 +665,7 @@ Update multiple with set data to multiple entities at once into the database, it
 import { Neo4TS } from 'neo4ts';
 
 //Update the name of a dog and person
-const action: DBAction = Neo4TS.create({
+const action: DBAction = Neo4TS.updateMultiple({
   dog: {
     id: 1,
     properties: { name: 'Muzzarella' },
@@ -706,7 +706,7 @@ Delete Multiple will create an action used to delete multiple entities in the da
 import { Neo4TS } from 'neo4ts';
 
 //Deleting a person and all dogs own
-const action: DBAction = Neo4TS.delete({
+const action: DBAction = Neo4TS.deleteMultiple({
   person: {
     id: 1, 
     isTargeteable: true, //<== don't forget to set it as the target

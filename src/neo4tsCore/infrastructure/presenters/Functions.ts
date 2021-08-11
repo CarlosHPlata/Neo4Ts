@@ -1,7 +1,12 @@
 import { GraphAbstraction } from '../../core/dtos/graph.abstraction.dto';
+import { GraphSchema } from '../../core/dtos/graph.schema.dto';
 import { ActionService } from '../../core/services/action.service';
+import { SchemaService } from '../../core/services/schema.service';
 
-export const makeActionFunctionalService = (actionService: ActionService) =>
+export const makeActionFunctionalService = (
+    actionService: ActionService,
+    schemaService: SchemaService
+) =>
     Object.freeze({
         findAll: (
             entitiesPatternDto: GraphAbstraction,
@@ -32,11 +37,22 @@ export const makeActionFunctionalService = (actionService: ActionService) =>
 
         runCypher: (cypher: string, parameters: any = {}) =>
             actionService.runCypher(cypher, parameters),
+
+        createSchema: (graphSchema: GraphSchema) =>
+            schemaService.createSchema(graphSchema),
     });
 
 const actionFunctionalService = makeActionFunctionalService(
-    new ActionService()
+    new ActionService(),
+    new SchemaService()
 );
+
+/**
+ * Create a pattern schema which you can use to build GraphAbstractions from it.
+ * @param {GraphSchema} graphSchema - a dto which abstracts nodes and relationships but without properties or ids
+ * @return {GraphSchemaEntity}
+ */
+export const createSchema = actionFunctionalService.createSchema;
 
 /**
  * Create a find all action that can be executed or used to generate a cypher string

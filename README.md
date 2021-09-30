@@ -374,6 +374,11 @@ The conditions supported are:
 //following strings are threated as equality
 | 'equal'
 | '='
+//following strings are threated as equality case insensitive
+| 'equal insensitive'
+| 'equalInsensitive'
+| 'equal!'
+| '=='
 //following strings are threated as different
 | 'different'
 | '<>'

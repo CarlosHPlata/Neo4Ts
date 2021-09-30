@@ -14,6 +14,7 @@ export enum PropertyTypes {
 
 export enum Condition {
     EQUAL = 'equal',
+    EQUAL_INSENSITIVE = 'equal!',
     DIFFERENT = 'different',
     CONTAINS = 'contains',
     NOTCONTAINS = 'notcontains',

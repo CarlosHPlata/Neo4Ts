@@ -16,7 +16,7 @@ export const filterConditionFactory = (
         case Condition.CONTAINS:
             if (property.type !== PropertyTypes.STRING) {
                 throw new Error(
-                    'Contains is an operator only available on strings'
+                    'Contains is a conditional only available on strings'
                 );
             }
             return `toLower(${propertyName}) CONTAINS ${paramValue}`;
@@ -24,7 +24,7 @@ export const filterConditionFactory = (
         case Condition.NOTCONTAINS:
             if (property.type !== PropertyTypes.STRING) {
                 throw new Error(
-                    'Contains is an operator only available on strings'
+                    'Contains is a conditional only available on strings'
                 );
             }
             return `(not ( toLower(${propertyName}) CONTAINS toLower(${paramValue}) ))`;
@@ -32,7 +32,7 @@ export const filterConditionFactory = (
         case Condition.STARTS:
             if (property.type !== PropertyTypes.STRING) {
                 throw new Error(
-                    'Contains is an operator only available on strings'
+                    'Contains is a conditional only available on strings'
                 );
             }
             return `toLower(${propertyName}) STARTS WITH toLower(${paramValue})`;
@@ -40,7 +40,7 @@ export const filterConditionFactory = (
         case Condition.ENDS:
             if (property.type !== PropertyTypes.STRING) {
                 throw new Error(
-                    'Contains is an operator only available on strings'
+                    'Contains is a conditional only available on strings'
                 );
             }
             return `toLower(${propertyName}) ENDS WITH toLower(${paramValue})`;
@@ -51,7 +51,7 @@ export const filterConditionFactory = (
                 property.type !== PropertyTypes.FLOAT
             ) {
                 throw new Error(
-                    'Greater is an operator only available on numeric types'
+                    'Greater is a conditional only available on numeric types'
                 );
             }
             return `${propertyName} > ${paramValue}`;
@@ -65,7 +65,7 @@ export const filterConditionFactory = (
                 property.type !== PropertyTypes.DATETIME
             ) {
                 throw new Error(
-                    'Greater or Equal (>=) is an operator only available on numeric or date types'
+                    'Greater or Equal (>=) is a conditional only available on numeric or date types'
                 );
             }
             return `${propertyName} >= ${paramValue}`;
@@ -76,7 +76,7 @@ export const filterConditionFactory = (
                 property.type !== PropertyTypes.FLOAT
             ) {
                 throw new Error(
-                    'LOWER is an operator only available on numeric types'
+                    'LOWER is a conditional only available on numeric types'
                 );
             }
             return `${propertyName} < ${paramValue}`;
@@ -90,7 +90,7 @@ export const filterConditionFactory = (
                 property.type !== PropertyTypes.DATETIME
             ) {
                 throw new Error(
-                    'Lower or Equal (<=) is an operator only available on numeric or date types'
+                    'Lower or Equal (<=) is a conditional only available on numeric or date types'
                 );
             }
             return `${propertyName} <= ${paramValue}`;
@@ -100,6 +100,14 @@ export const filterConditionFactory = (
 
         case Condition.REVERSEIN:
             return `${propertyName} IN ${paramValue}`;
+
+        case Condition.EQUAL_INSENSITIVE:
+            if (property.type !== PropertyTypes.STRING) {
+                throw new Error(
+                    'Equal insensitive is a conditional only available on strings'
+                );
+            }
+            return `toLower(${propertyName}) = toLower(${paramValue})`;
 
         case Condition.EQUAL:
         default:

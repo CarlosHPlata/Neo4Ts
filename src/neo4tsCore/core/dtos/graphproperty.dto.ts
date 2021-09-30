@@ -32,6 +32,10 @@ export type GraphPropertyDefinition = {
     condition?:
         | 'equal'
         | '='
+        | 'equal!'
+        | 'equalInsensitive'
+        | 'equal insensitive'
+        | '=='
         | 'different'
         | '<>'
         | '!='

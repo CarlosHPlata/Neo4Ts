@@ -6,6 +6,12 @@ export const PropertyConditionFactory = (value: string): Condition => {
         case '=':
             return Condition.EQUAL;
 
+        case 'equalInsensitive':
+        case 'equal insensitive':
+        case 'equal!':
+        case '==':
+            return Condition.EQUAL_INSENSITIVE;
+
         case 'different':
         case '<>':
         case '!=':

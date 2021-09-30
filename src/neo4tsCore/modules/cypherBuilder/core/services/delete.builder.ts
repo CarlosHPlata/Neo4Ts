@@ -5,8 +5,11 @@ import { IDBExecuter } from '../../../../core/interfaces/dbexecuter.adapter';
 import { CypherBuilder } from './cypherParts/cypher.builder';
 import { DeleteService } from './cypherParts/delete/delete.service';
 import * as Neo4JDriver from 'neo4j-driver';
+import { RETUNR_KEYWORD } from './cypherParts/cypher.charactes';
 
 export class DeleteBuilder extends DBAction {
+    protected RETURN_KEYWORD: string = '';
+
     constructor(
         entities: IGraphEntity[],
         private target: IGraphEntity,
@@ -36,5 +39,13 @@ export class DeleteBuilder extends DBAction {
         const params: any = this.getParamsForDatabaseUse();
 
         return this.executerAdapter.run(query, params);
+    }
+    
+    overrideReturnAction(
+        callBack: (entities: IGraphEntity[], params: ParamsHolder) => string
+    ): DBAction {
+        this.RETURN_KEYWORD = RETUNR_KEYWORD;
+        super.overrideReturnAction(callBack);
+        return this;
     }
 }

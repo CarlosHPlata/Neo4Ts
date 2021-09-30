@@ -43,11 +43,7 @@ export class CypherAction extends DBAction {
             'On cypher actions there is no return action to override'
         );
     }
-
-    setEntities(): DBAction {
-        throw new Error('On cypher actions there is no entities');
-    }
-
+    
     getParamHolder(): ParamsHolder {
         throw new Error('On cypher actions there is no param holder');
     }

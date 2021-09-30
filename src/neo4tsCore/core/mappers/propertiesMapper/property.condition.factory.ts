@@ -11,7 +11,7 @@ export const PropertyConditionFactory = (value: string): Condition => {
         case 'equal!':
         case '==':
             return Condition.EQUAL_INSENSITIVE;
-
+            
         case 'different':
         case '<>':
         case '!=':
